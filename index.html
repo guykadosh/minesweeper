@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script
+      defer
+      src="https://kit.fontawesome.com/0d3f998bf1.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Akshar&family=Lobster&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"
+    />
+    <script src="https://unpkg.com/phosphor-icons"></script>
+
+    <link rel="stylesheet" href="css/main.css" />
+
+    <script defer src="js/utils.js"></script>
+    <script defer src="js/model.js"></script>
+    <script defer src="js/view.js"></script>
+    <script defer src="js/controller.js"></script>
+
+    <title>Minesweeper</title>
+  </head>
+  <body onload="initGame()">
+    <div class="page">
+      <h1>Minesweeper <i class="fa-solid fa-bomb"> </i></h1>
+
+      <!-- <i class="fa-regular fa-face-smile"></i>
+        <i class="fa-regular fa-face-dizzy"></i>
+        <i class="ph-smiley-nervous"></i> -->
+
+      <div class="box">
+        <div class="lives-container">
+          <h2>Lives left:</h2>
+          <span class="lives">
+            <i class="fa-solid fa-heart"></i>
+            <i class="fa-solid fa-heart"></i>
+            <i class="fa-solid fa-heart"></i>
+          </span>
+        </div>
+
+        <div class="game-state" onclick="initGame()">
+          <span class="icon"><i class="fa-regular fa-face-smile"></i></span>
+        </div>
+
+        <div class="timer-container">
+          <h2><i class="fa-solid fa-clock"></i> Time:</h2>
+          <p class="timer">00:00:00</p>
+        </div>
+      </div>
+
+      <div class="features">
+        <div class="game-levels">
+          <h2>Choose level:</h2>
+          <div class="btn-container">
+            <button
+              class="custom-btn btn"
+              data-level="4"
+              onclick="changeBoard(this)"
+            >
+              <span>Begginer <i class="fa-solid fa-baby"></i></span>
+            </button>
+            <button
+              class="custom-btn btn"
+              data-level="8"
+              onclick="changeBoard(this)"
+            >
+              <span>Medium <i class="fa-regular fa-user"></i></span>
+            </button>
+            <button
+              class="custom-btn btn"
+              data-level="12"
+              onclick="changeBoard(this)"
+            >
+              <span>Expert <i class="fa-solid fa-user-tie"></i></span>
+            </button>
+          </div>
+        </div>
+        <div class="hints-container">
+          <h2>Hints:</h2>
+          <div class="hints">
+            <span><i class="fa-regular fa-lightbulb"></i></span>
+            <span><i class="fa-regular fa-lightbulb"></i></span>
+            <span><i class="fa-regular fa-lightbulb"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="game-board">
+        <div class="board-container">
+          <table>
+            <tbody class="board"></tbody>
+          </table>
+        </div>
+        <div class="btns-container">
+          <button class="custom-btn btn">
+            <i class="fa-solid fa-rotate-left"></i> Undo
+          </button>
+          <button class="custom-btn btn">
+            <i class="fa-solid fa-helmet-safety"></i> Safe Click
+          </button>
+          <button class="custom-btn btn">7-Boom</button>
+          <button class="custom-btn btn">
+            <i class="fa-solid fa-arrows-up-down-left-right"></i> Costume
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <footer><p>© Guy Kadosh - Coding Academy May 22 - Sprint 1</p></footer>
+  </body>
+</html>
