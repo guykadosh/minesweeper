@@ -238,9 +238,3 @@ function setManualMode() {
   // elModeTitle.innerText = `Costume Mode: ${gGame.manualMinesCount} left to place`;
   renderModeTitle(`Costume Mode: ${gGame.manualMinesCount} left to place`);
 }
-
-// Render Mode title
-function renderModeTitle(Txt) {
-  const elModeTitle = document.querySelector('.mode-title');
-  elModeTitle.innerText = Txt;
-}

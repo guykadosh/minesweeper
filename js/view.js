@@ -131,7 +131,14 @@ function flickerCell(elCell, cell, milliSecs) {
 
   setTimeout(() => {
     hideCell(elCell);
+    renderModeTitle('Game is on');
 
     renderHints();
   }, 200);
+}
+
+// Render Mode title
+function renderModeTitle(Txt) {
+  const elModeTitle = document.querySelector('.mode-title');
+  elModeTitle.innerText = Txt;
 }
