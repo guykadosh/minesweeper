@@ -7,6 +7,10 @@ const gGame = {
   shownCount: 0,
   markedCount: 0,
   secsPassed: 0,
+  livesCount: 3,
+  hintsCount: 3,
+  isHintOn: false,
+  safeCount: 3,
 };
 
 var gBoard;

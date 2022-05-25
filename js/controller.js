@@ -13,10 +13,13 @@ function initGame() {
   var elTimer = document.querySelector('.timer');
   elTimer.innerText = '00:00:00';
 
-  const elGameState = document.querySelector('.game-state .icon');
-  elGameState.innerHTML = ALIVE_ICON;
+  renderGameState(ALIVE_ICON);
+
+  gGame.livesCount = 3;
+  renderLives();
 }
 
+// Start game on first move
 function startGame() {
   gGame.isOn = true;
   setMines(gBoard, gLevel.MINES);
@@ -31,9 +34,14 @@ function cellClicked(elCell, i, j) {
 
   var clickedCell = gBoard[i][j];
 
+  // ignore clicks on shown cells
   if (clickedCell.isShown) return;
 
-  if (clickedCell.isMine) {
+  // Handel Hint On
+  if (gGame.isHintOn) {
+    flickerCell(elCell, clickedCell);
+    gGame.isHintOn = false;
+    return;
   }
 
   // Update Model
@@ -42,25 +50,29 @@ function cellClicked(elCell, i, j) {
   // Update DOM
   showCell(elCell, clickedCell);
 
+  // Hangle mine clicks
   if (clickedCell.isMine) {
-    gameOver();
+    gGame.livesCount--;
+    renderLives();
+
+    if (gGame.livesCount === 1) renderGameState(DYING_ICON);
+    if (!gGame.livesCount) {
+      gameLost();
+    }
+
     return;
   }
 
-  if (clickedCell.minesAroundCount === 0) expandShown(gBoard, elCell, i, j);
+  // handle cell with no mines around
+  if (clickedCell.minesAroundCount === 0) expandShown(gBoard, i, j);
 
   // Check if game Won
-  if (checkGameOver()) {
-    clearInterval(gInterval);
-    gGame.isOver = true;
-    gGame.isOn = false;
-    const elGameState = document.querySelector('.game-state .icon');
-    elGameState.innerHTML = WON_ICON;
-  }
+  if (checkGameOver()) gameWon();
 }
 
-// Called on right click to mark a cell
+// Handel right clicks on a cell to add/remove flags
 function cellMarked(ev, elCell) {
+  // prevent context menu open
   ev.preventDefault();
 
   if (!gGame.isOn) return;
@@ -83,13 +95,42 @@ function cellMarked(ev, elCell) {
   elCell.innerHTML = `<span style="color:#fff">${FLAG_ICON}</span>`;
 
   // Check if game Won
-  if (checkGameOver()) {
-    clearInterval(gInterval);
-    gGame.isOver = true;
-    gGame.isOn = false;
-    const elGameState = document.querySelector('.game-state .icon');
-    elGameState.innerHTML = WON_ICON;
+  if (checkGameOver()) gameWon();
+}
+
+// Expand  shown cells for every cell that had no mine neighbors
+function expandShown(board, rowIdx, colIdx) {
+  for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
+    if (i < 0 || i >= board.length) continue;
+
+    for (var j = colIdx - 1; j <= colIdx + 1; j++) {
+      if (j < 0 || j >= board[i].length) continue;
+      if (i === rowIdx && j === colIdx) continue;
+
+      var currCell = board[i][j];
+
+      if (currCell.isShown) continue;
+
+      // Model
+      currCell.isShown = true;
+
+      // DOM
+      showCellByLoc({ i, j });
+
+      if (currCell.minesAroundCount === 0) expandShown(board, i, j);
+    }
   }
+}
+
+function hintClicked(elHint) {
+  if (gGame.isHintOn) return;
+
+  // Model
+  gGame.isHintOn = true;
+  gGame.hintsCount--;
+
+  // DOM
+  elHint.style.color = '#F7D716';
 }
 
 // Checks if user won the game
@@ -109,41 +150,8 @@ function checkGameOver() {
   return true;
 }
 
-// When user clicks a cell with no
-// mines around, we need to open
-// not only that cell, but also its
-// neighbors.
-
-// TODO: BONUS: if you have the time
-// later, try to work more like the
-// real algorithm (see description
-// at the Bonuses section below)
-function expandShown(board, elCell, rowIdx, colIdx) {
-  for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
-    if (i < 0 || i >= board.length) continue;
-
-    for (var j = colIdx - 1; j <= colIdx + 1; j++) {
-      if (j < 0 || j >= board[i].length) continue;
-      if (i === rowIdx && j === colIdx) continue;
-      var currCell = board[i][j];
-
-      var cellId = '#' + getIdName({ i, j });
-      var nextElCell = document.querySelector(cellId);
-
-      // if (currCell.minesAroundCount === 0 && !currCell.isShown) {
-      //   expandShown(board, nextElCell, i, j);
-      // }
-
-      // Model
-      currCell.isShown = true;
-
-      // DOM
-      showCell(nextElCell, currCell);
-    }
-  }
-}
-
-function gameOver() {
+// Handel game lost state
+function gameLost() {
   // Model
   gGame.isOver = true;
   gGame.isOn = false;
@@ -158,18 +166,31 @@ function gameOver() {
       gBoard[i][j].isShown = true;
 
       // DOM
-      var cellId = '#' + getIdName({ i, j });
-      var elCell = document.querySelector(cellId);
+      // var cellId = '#' + getIdName({ i, j });
+      // var elCell = document.querySelector(cellId);
 
-      showCell(elCell, gBoard[i][j]);
+      // showCell(elCell, gBoard[i][j]);
+      showCellByLoc({ i, j });
     }
   }
 
   // DOM
-  const elGameState = document.querySelector('.game-state .icon');
-  elGameState.innerHTML = DEAD_ICON;
+  renderGameState(DEAD_ICON);
 }
 
+// Handel game won state
+function gameWon() {
+  clearInterval(gInterval);
+
+  // Model
+  gGame.isOver = true;
+  gGame.isOn = false;
+
+  // DOM
+  renderGameState(WON_ICON);
+}
+
+// Initialize and render timer
 function startTimer() {
   // Clear if there is previous interval
   clearInterval(gInterval);

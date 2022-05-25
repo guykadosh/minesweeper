@@ -91,9 +91,15 @@
         <div class="hints-container">
           <h2>Hints:</h2>
           <div class="hints">
-            <span><i class="fa-regular fa-lightbulb"></i></span>
-            <span><i class="fa-regular fa-lightbulb"></i></span>
-            <span><i class="fa-regular fa-lightbulb"></i></span>
+            <span class="hint" onclick="hintClicked(this)"
+              ><i class="fa-regular fa-lightbulb"></i
+            ></span>
+            <span class="hint" onclick="hintClicked(this)"
+              ><i class="fa-regular fa-lightbulb"></i
+            ></span>
+            <span class="hint" onclick="hintClicked(this)"
+              ><i class="fa-regular fa-lightbulb"></i
+            ></span>
           </div>
         </div>
       </div>
@@ -107,8 +113,8 @@
           <button class="custom-btn btn">
             <i class="fa-solid fa-rotate-left"></i> Undo
           </button>
-          <button class="custom-btn btn">
-            <i class="fa-solid fa-helmet-safety"></i> Safe Click
+          <button class="custom-btn btn" onclick="showSafeCell(this)">
+            3 Safe Clicks
           </button>
           <button class="custom-btn btn">7-Boom</button>
           <button class="custom-btn btn">

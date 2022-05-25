@@ -23,6 +23,7 @@ body {
   text-align: center;
   align-items: center;
 }
+/* Header Desing */
 
 h1 {
   font-size: 48px;
@@ -54,12 +55,40 @@ h1 {
 .game-state:hover {
   background-color: #f9fcfa;
 }
+
 .box h2 {
   margin-bottom: 12px;
 }
 
 .lives {
   transition: all 1s;
+}
+
+.features {
+  display: flex;
+  padding: 20px;
+  margin: 40px auto;
+  gap: 36px;
+  text-align: center;
+  align-items: center;
+}
+
+.hints {
+  font-size: 36px;
+  width: 150px;
+  height: 40px;
+}
+
+.hint {
+  cursor: pointer;
+}
+
+/* Board Design */
+
+.game-board {
+  display: flex;
+  gap: 36px;
+  margin-bottom: 96px;
 }
 
 .board-container {
@@ -91,33 +120,13 @@ table {
   background-color: #f9fcfa;
 }
 
-.game-board {
-  display: flex;
-  gap: 36px;
-  margin-bottom: 96px;
-}
-
-.features {
-  /* border: 3px solid #f9fcfa; */
-  /* width: 600px; */
-  display: flex;
-  padding: 20px;
-  /* border-radius: 9px; */
-  margin: 40px auto;
-  gap: 36px;
-  text-align: center;
-  align-items: center;
-}
-
-.hints {
-  font-size: 36px;
-}
-
 .btns-container {
   display: flex;
   flex-direction: column;
   gap: 0px;
 }
+
+/* footer */
 
 footer {
   text-transform: uppercase;
@@ -125,8 +134,10 @@ footer {
   color: #888;
   text-align: center;
   margin-bottom: 64px;
+  font-size: 12px;
 }
-/* Button desgin i took from free source */
+
+/* General button desgin i took from free source */
 button {
   margin: 5px;
 }
