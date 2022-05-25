@@ -17,13 +17,18 @@ function initGame() {
 
   gGame.livesCount = 3;
   renderLives();
+
+  renderModeTitle('Normal Mode');
+
+  gGame.is7BoomMode = false;
+  gGame.isManual = false;
 }
 
 // Start game on first move
-function startGame(isManual = false) {
+function startGame(isModed = false) {
   gGame.isOn = true;
-  if (!isManual) setMines(gBoard, gLevel.MINES);
-  if (isManual) renderModeTitle('Costume Game Started');
+  if (!isModed) setMines(gBoard, gLevel.MINES);
+  // if (isModed) renderModeTitle('Costume Game Started');
   setMinesNegsCount(gBoard);
   startTimer();
 }
@@ -51,6 +56,12 @@ function cellClicked(elCell, i, j) {
       startGame(true);
     }
 
+    return;
+  }
+
+  if (gGame.is7BoomMode) {
+    startGame(true);
+    gGame.is7BoomMode = false;
     return;
   }
 
@@ -237,4 +248,11 @@ function setManualMode() {
   // const elModeTitle = document.querySelector('.mode-title');
   // elModeTitle.innerText = `Costume Mode: ${gGame.manualMinesCount} left to place`;
   renderModeTitle(`Costume Mode: ${gGame.manualMinesCount} left to place`);
+}
+
+function set7BoomMode() {
+  gGame.is7BoomMode = true;
+  gBoard = buildBoard();
+  set7BoomMines(gBoard);
+  renderModeTitle('7 Boom Mode');
 }

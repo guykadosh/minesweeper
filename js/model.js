@@ -14,6 +14,7 @@ const gGame = {
   moves: [],
   isManual: false,
   manualMinesCount: 0,
+  is7Boom: false,
 };
 
 var gBoard;
@@ -39,8 +40,6 @@ function buildBoard() {
       board[i][j] = cell;
     }
   }
-  // setMines(board, gLevel.MINES);
-  // setMinesNegsCount(board);
   return board;
 }
 
@@ -70,11 +69,26 @@ function setMinesNegsCount(board) {
   }
 }
 
+function set7BoomMines(board) {
+  var count = 0;
+  for (var i = 0; i < board.length; i++) {
+    for (var j = 0; j < board[0].length; j++) {
+      if (count !== 0 && (count % 7 === 0 || (count + '').includes('7'))) {
+        gBoard[i][j].isMine = true;
+      }
+      count++;
+    }
+  }
+  console.log(board);
+}
+
 function changeBoard(elBtn) {
   console.log('clicked');
   if (gLevel.SIZE === +elBtn.dataset.level) return;
   console.log(elBtn.dataset.level);
   gLevel.SIZE = +elBtn.dataset.level;
+
+  renderModeTitle('Normal Mode');
 
   switch (gLevel.SIZE) {
     case 4:
