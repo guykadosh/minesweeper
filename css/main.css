@@ -83,6 +83,12 @@ h1 {
   cursor: pointer;
 }
 
+.mode-box {
+  margin-bottom: 64px;
+}
+.mode-title {
+  font-size: 36px;
+}
 /* Board Design */
 
 .game-board {

@@ -11,6 +11,9 @@ const gGame = {
   hintsCount: 3,
   isHintOn: false,
   safeCount: 3,
+  moves: [],
+  isManual: false,
+  manualMinesCount: 0,
 };
 
 var gBoard;
