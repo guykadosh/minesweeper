@@ -98,7 +98,7 @@ function showHintArea(location) {
     if (i < 0 || i >= gBoard.length) continue;
     for (var j = location.j - 1; j <= location.j + 1; j++) {
       if (j < 0 || j >= gBoard[i].length) continue;
-      if (gBoard[i][j].isShown) continue;
+      if (gBoard[i][j].isShown || gBoard[i][j].isMarked) continue;
       showCellByLoc({ i, j });
     }
   }
@@ -108,7 +108,7 @@ function showHintArea(location) {
       if (i < 0 || i >= gBoard.length) continue;
       for (var j = location.j - 1; j <= location.j + 1; j++) {
         if (j < 0 || j >= gBoard[i].length) continue;
-        if (gBoard[i][j].isShown) continue;
+        if (gBoard[i][j].isShown || gBoard[i][j].isMarked) continue;
         hideCellByLoc({ i, j });
       }
     }

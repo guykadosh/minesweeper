@@ -94,19 +94,19 @@ function cellClicked(elCell, i, j) {
     gGame.is7BoomMode = false;
   }
 
-  //  Start normal mode
-  if (!gGame.isOn) startGame(false, { i, j });
-
   // ignore clicks on shown cells
   if (clickedCell.isShown || clickedCell.isMarked) return;
 
   // Handle Hint On
   if (gGame.isHintOn) {
     showHintArea({ i, j });
-    // flickerCell(elCell, clickedCell);
+
     gGame.isHintOn = false;
     return;
   }
+
+  //  Start normal mode
+  if (!gGame.isOn) startGame(false, { i, j });
 
   // Show Cell
   // Update Model
@@ -131,7 +131,7 @@ function cellClicked(elCell, i, j) {
     if (gGame.livesCount === 1) renderGameState(DYING_ICON);
 
     // When relevant  check if game won(clicked last mine but still has lives)
-    if (gGame.markedCount >= gLevel.MINES && checkGameOver()) gameWon();
+    if (gGame.markedCount === gLevel.MINES && checkGameOver()) gameWon();
 
     // Lose game when out of lifes
     if (!gGame.livesCount) gameLost();
@@ -181,7 +181,7 @@ function cellMarked(ev, elCell) {
   elCell.innerHTML = `<span style="color:#fff">${FLAG_ICON}</span>`;
 
   // When relevant  check if game won
-  if (gGame.markedCount >= gLevel.MINES && checkGameOver()) gameWon();
+  if (gGame.markedCount === gLevel.MINES && checkGameOver()) gameWon();
 }
 
 function hintClicked(elHint) {
