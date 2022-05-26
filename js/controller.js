@@ -93,7 +93,8 @@ function cellClicked(elCell, i, j) {
 
   // Handle Hint On
   if (gGame.isHintOn) {
-    flickerCell(elCell, clickedCell);
+    showHintArea({ i, j });
+    // flickerCell(elCell, clickedCell);
     gGame.isHintOn = false;
     return;
   }
@@ -101,6 +102,7 @@ function cellClicked(elCell, i, j) {
   // Show Cell
   // Update Model
   clickedCell.isShown = true;
+  // gGame.shownCount++;
 
   // Update DOM
   showCell(elCell, clickedCell);
@@ -114,6 +116,7 @@ function cellClicked(elCell, i, j) {
     gGame.moves.push({ cell: clickedCell, location: { i, j } });
     // considered as a marked mine
     clickedCell.isMarked = true;
+    // gGame.markedCount++;
 
     if (gGame.livesCount === 1) renderGameState(DYING_ICON);
 
@@ -148,14 +151,18 @@ function cellMarked(ev, elCell) {
 
   if (curCell.isShown) return;
 
+  // Unmark
   if (curCell.isMarked) {
     curCell.isMarked = false;
+    // gGame.markedCount--;
+
     elCell.innerHTML = '';
     return;
   }
 
   // Update model
   curCell.isMarked = true;
+  // gGame.markedCount++;
 
   // Update DOM
   elCell.innerHTML = `<span style="color:#fff">${FLAG_ICON}</span>`;
@@ -171,6 +178,7 @@ function hintClicked(elHint) {
   }
 
   if (gGame.isHintOn) return;
+
   // User instructions
   renderModeTitle('Pick a cell for a hint');
 
@@ -220,10 +228,12 @@ function undoMove() {
   if (Array.isArray(lastMove)) {
     lastMove.forEach(move => {
       move.cell.isShown = false;
+      // gGame.shownCount--;
       hideCellByLoc(move.location);
     });
   } else {
     lastMove.cell.isShown = false;
+    // gGame.shownCount--;
     hideCellByLoc(lastMove.location);
   }
 }

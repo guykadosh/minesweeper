@@ -92,6 +92,7 @@ function renderMarkByLoc(location) {
 
   elCell.innerHTML = `<span style="color:#fff">${FLAG_ICON}</span>`;
 }
+
 // Render Lives
 function renderLives() {
   const elLives = document.querySelector('.lives');
@@ -140,32 +141,13 @@ function showSafeCell(elBtn) {
   }, 2000);
 }
 
-// flicker user picked cell for hint
-function flickerCell(elCell, cell, milliSecs) {
-  elCell.classList.remove('cell--hidden');
-  elCell.classList.add('cell--shown');
-
-  if (cell.isMine) {
-    elCell.innerHTML = `<span style="color:#FF5D5D">${MINE_ICON}</span>`;
-  } else {
-    elCell.innerText =
-      cell.minesAroundCount === 0 ? ' ' : cell.minesAroundCount;
-  }
-
-  setTimeout(() => {
-    hideCell(elCell);
-    renderModeTitle(GAME_ON_TITLE);
-
-    renderHints();
-  }, 200);
-}
-
 // Render Mode title and user instructions
 function renderModeTitle(Txt) {
   const elModeTitle = document.querySelector('.mode-title');
   elModeTitle.innerHTML = Txt;
 }
 
+// Render the best time according to current level
 function renderBestTime() {
   const elBestTime = document.querySelector('.best-time');
 
@@ -182,6 +164,7 @@ function renderBestTime() {
   }
 }
 
+// Guard msgs when some features not available is some situatuions
 function guardMsg() {
   if (!gGame.isOn) {
     renderModeTitle(`Start Game First`);
@@ -190,4 +173,28 @@ function guardMsg() {
     renderModeTitle(`Restart Game first`);
     setTimeout(() => renderModeTitle(GAME_ON_TITLE), 800);
   }
+}
+
+// recieve location and shows to the user all cells around it(include the cell)
+function showHintArea(location) {
+  console.log('i got called');
+  for (var i = location.i - 1; i <= location.i + 1; i++) {
+    if (i < 0 || i >= gBoard.length) continue;
+    for (var j = location.j - 1; j <= location.j + 1; j++) {
+      if (j < 0 || j >= gBoard[i].length) continue;
+      showCellByLoc({ i, j });
+    }
+  }
+
+  setTimeout(() => {
+    for (var i = location.i - 1; i <= location.i + 1; i++) {
+      if (i < 0 || i >= gBoard.length) continue;
+      for (var j = location.j - 1; j <= location.j + 1; j++) {
+        if (j < 0 || j >= gBoard[i].length) continue;
+        hideCellByLoc({ i, j });
+      }
+    }
+    renderModeTitle(GAME_ON_TITLE);
+    renderHints();
+  }, 300);
 }

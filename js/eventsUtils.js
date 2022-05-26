@@ -58,6 +58,7 @@ function gameLost() {
 
   clearInterval(gInterval);
 
+  // reveals all the board
   for (var i = 0; i < gBoard.length; i++) {
     for (var j = 0; j < gBoard[0].length; j++) {
       if (gBoard[i][j].isShown) continue;
@@ -87,7 +88,7 @@ function gameWon() {
   renderGameState(WON_ICON);
   renderModeTitle('Well Done!');
 
-  // Put flags on all bombs not marked
+  // Put flags on all bombs not marked and reveals rest of board
   for (var i = 0; i < gBoard.length; i++) {
     for (var j = 0; j < gBoard[0].length; j++) {
       if (gBoard[i][j].isShown) continue;
@@ -95,6 +96,7 @@ function gameWon() {
       if (gBoard[i][j].isMine) {
         // Model
         gBoard[i][j].isMarked = true;
+        gGame.markedCount++;
         // DOM
         renderMarkByLoc({ i, j });
       } else {
@@ -112,12 +114,10 @@ function gameWon() {
 
 // Checks if user won the game
 function checkGameOver() {
-  // first condition - all non mines are revealed
-  // second condition - if not all revealed but all mines are flagged
-
   return checkNonMinesShown() || checkMinesFlagged();
 }
 
+// first win condition - all non mines are revealed
 function checkNonMinesShown() {
   for (var i = 0; i < gBoard.length; i++) {
     for (var j = 0; j < gBoard[0].length; j++) {
@@ -130,6 +130,7 @@ function checkNonMinesShown() {
   return true;
 }
 
+// second win condition - if not all revealed but all mines are flagged
 function checkMinesFlagged() {
   for (var i = 0; i < gBoard.length; i++) {
     for (var j = 0; j < gBoard[0].length; j++) {
@@ -161,6 +162,7 @@ function expandShown(board, rowIdx, colIdx) {
       // DOM
       showCellByLoc({ i, j });
 
+      // if finds another cell with no neighbors render its surrounding aswell
       if (currCell.minesAroundCount === 0) expandShown(board, i, j);
       gGame.moves[gGame.moves.length - 1].push({
         cell: currCell,

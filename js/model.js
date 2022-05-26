@@ -6,9 +6,9 @@
 const gGame = {
   isOn: false,
   isOver: false,
-  shownCount: 0,
-  markedCount: 0,
-  secsPassed: 0,
+  // shownCount: 0,
+  // markedCount: 0,
+  // secsPassed: 0,
   livesCount: 3,
   hintsCount: 3,
   isHintOn: false,
