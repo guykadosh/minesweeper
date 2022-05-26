@@ -44,6 +44,114 @@ function renderBoard(board) {
   elBoard.innerHTML = strHTML;
 }
 
+// Render Lives
+function renderLives() {
+  const elLives = document.querySelector('.lives');
+  var strHTML = '';
+  for (var i = 0; i < gGame.livesCount; i++) {
+    strHTML += LIVE_ICON;
+  }
+
+  elLives.innerHTML = strHTML;
+}
+
+// Rerender hints
+function renderHints() {
+  const elHints = document.querySelector('.hints');
+  var strHTML = '';
+  for (var i = 0; i < gGame.hintsCount; i++) {
+    strHTML += HINT_HTML;
+  }
+
+  elHints.innerHTML = strHTML;
+}
+
+function renderGameState(value) {
+  const elGameState = document.querySelector('.game-state .icon');
+  elGameState.innerHTML = value;
+}
+
+// Shows random safe cell for 2 seconds
+function showSafeCell(elBtn) {
+  if (!gGame.isOn) {
+    renderGuardMsg();
+    return;
+  }
+
+  if (!gGame.safeCount) return;
+
+  gGame.safeCount--;
+
+  var cellCoord = getSafeCellLoc();
+
+  showCellByLoc(cellCoord);
+  elBtn.innerText = `${gGame.safeCount} Safe Clicks`;
+
+  setTimeout(() => {
+    hideCellByLoc(cellCoord);
+  }, 2000);
+}
+
+// recieve location and shows to the user all cells around it(include the cell)
+function showHintArea(location) {
+  console.log('i got called');
+  for (var i = location.i - 1; i <= location.i + 1; i++) {
+    if (i < 0 || i >= gBoard.length) continue;
+    for (var j = location.j - 1; j <= location.j + 1; j++) {
+      if (j < 0 || j >= gBoard[i].length) continue;
+      showCellByLoc({ i, j });
+    }
+  }
+
+  setTimeout(() => {
+    for (var i = location.i - 1; i <= location.i + 1; i++) {
+      if (i < 0 || i >= gBoard.length) continue;
+      for (var j = location.j - 1; j <= location.j + 1; j++) {
+        if (j < 0 || j >= gBoard[i].length) continue;
+        hideCellByLoc({ i, j });
+      }
+    }
+    renderModeTitle(GAME_ON_TITLE);
+    renderHints();
+  }, 300);
+}
+
+// Render the best time according to current level
+function renderBestTime() {
+  const elBestTime = document.querySelector('.best-time');
+
+  switch (gLevel.SIZE) {
+    case 4:
+      elBestTime.innerText = `Beginner: ${convertMsToTime(gBestTimeBeginner)}`;
+      break;
+    case 8:
+      elBestTime.innerText = `Medium: ${convertMsToTime(gBestTimeMedium)}`;
+      break;
+    case 12:
+      elBestTime.innerText = `Expert: ${convertMsToTime(gBestTimeExpert)}`;
+      break;
+  }
+}
+
+// Render Mode title and user instructions
+function renderModeTitle(Txt) {
+  const elModeTitle = document.querySelector('.mode-title');
+  elModeTitle.innerHTML = Txt;
+}
+
+// Guard msgs when some features not available is some situatuions
+function renderGuardMsg() {
+  if (!gGame.isOn) {
+    renderModeTitle(`Start Game First`);
+    setTimeout(() => renderModeTitle('Click on a cell to start game'), 800);
+  } else {
+    renderModeTitle(`Restart Game first`);
+    setTimeout(() => renderModeTitle(GAME_ON_TITLE), 800);
+  }
+}
+
+/// RENDER CELLS FUNCTIONS
+
 // Show cell by given location
 function showCellByLoc(location) {
   // get model
@@ -91,110 +199,4 @@ function renderMarkByLoc(location) {
   var elCell = document.querySelector(cellId);
 
   elCell.innerHTML = `<span style="color:#fff">${FLAG_ICON}</span>`;
-}
-
-// Render Lives
-function renderLives() {
-  const elLives = document.querySelector('.lives');
-  var strHTML = '';
-  for (var i = 0; i < gGame.livesCount; i++) {
-    strHTML += LIVE_ICON;
-  }
-
-  elLives.innerHTML = strHTML;
-}
-
-// Rerender hints
-function renderHints() {
-  const elHints = document.querySelector('.hints');
-  var strHTML = '';
-  for (var i = 0; i < gGame.hintsCount; i++) {
-    strHTML += HINT_HTML;
-  }
-
-  elHints.innerHTML = strHTML;
-}
-
-function renderGameState(value) {
-  const elGameState = document.querySelector('.game-state .icon');
-  elGameState.innerHTML = value;
-}
-
-// Shows random safe cell for 2 seconds
-function showSafeCell(elBtn) {
-  if (!gGame.isOn) {
-    guardMsg();
-    return;
-  }
-
-  if (!gGame.safeCount) return;
-
-  gGame.safeCount--;
-
-  var cellCoord = getSafeCellLoc();
-
-  showCellByLoc(cellCoord);
-  elBtn.innerText = `${gGame.safeCount} Safe Clicks`;
-
-  setTimeout(() => {
-    hideCellByLoc(cellCoord);
-  }, 2000);
-}
-
-// Render Mode title and user instructions
-function renderModeTitle(Txt) {
-  const elModeTitle = document.querySelector('.mode-title');
-  elModeTitle.innerHTML = Txt;
-}
-
-// Render the best time according to current level
-function renderBestTime() {
-  const elBestTime = document.querySelector('.best-time');
-
-  switch (gLevel.SIZE) {
-    case 4:
-      elBestTime.innerText = `Beginner: ${convertMsToTime(gBestTimeBeginner)}`;
-      break;
-    case 8:
-      elBestTime.innerText = `Medium: ${convertMsToTime(gBestTimeMedium)}`;
-      break;
-    case 12:
-      elBestTime.innerText = `Expert: ${convertMsToTime(gBestTimeExpert)}`;
-      break;
-  }
-}
-
-// Guard msgs when some features not available is some situatuions
-function guardMsg() {
-  if (!gGame.isOn) {
-    renderModeTitle(`Start Game First`);
-    setTimeout(() => renderModeTitle('Click on a cell to start game'), 800);
-  } else {
-    renderModeTitle(`Restart Game first`);
-    setTimeout(() => renderModeTitle(GAME_ON_TITLE), 800);
-  }
-}
-
-// recieve location and shows to the user all cells around it(include the cell)
-function showHintArea(location) {
-  console.log('i got called');
-  for (var i = location.i - 1; i <= location.i + 1; i++) {
-    if (i < 0 || i >= gBoard.length) continue;
-    for (var j = location.j - 1; j <= location.j + 1; j++) {
-      if (j < 0 || j >= gBoard[i].length) continue;
-      showCellByLoc({ i, j });
-    }
-  }
-
-  setTimeout(() => {
-    for (var i = location.i - 1; i <= location.i + 1; i++) {
-      if (i < 0 || i >= gBoard.length) continue;
-      for (var j = location.j - 1; j <= location.j + 1; j++) {
-        if (j < 0 || j >= gBoard[i].length) continue;
-        hideCellByLoc({ i, j });
-      }
-    }
-    renderModeTitle(GAME_ON_TITLE);
-    renderHints();
-  }, 300);
 }

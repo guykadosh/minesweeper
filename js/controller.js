@@ -176,12 +176,12 @@ function cellMarked(ev, elCell) {
   elCell.innerHTML = `<span style="color:#fff">${FLAG_ICON}</span>`;
 
   // When relevant  check if game won
-  if (gGame.markedCount > gLevel.MINES && checkGameOver()) gameWon();
+  if (gGame.markedCount >= gLevel.MINES && checkGameOver()) gameWon();
 }
 
 function hintClicked(elHint) {
   if (!gGame.isOn) {
-    guardMsg();
+    renderGuardMsg();
     return;
   }
 
@@ -203,7 +203,7 @@ function setManualMode() {
   if (checkNonMinesShown()) return;
 
   if (gGame.isOn) {
-    guardMsg();
+    renderGuardMsg();
     return;
   }
 
@@ -218,7 +218,7 @@ function set7BoomMode() {
   if (checkNonMinesShown()) return;
 
   if (gGame.isOn) {
-    guardMsg();
+    renderGuardMsg();
     return;
   }
 

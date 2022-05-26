@@ -2,6 +2,8 @@
 /// Handle Events Utils///
 /////////////////////////
 
+// Timers
+
 // Initialize and render timer
 function startTimer() {
   // Clear if there is previous interval
@@ -49,6 +51,8 @@ function checkBestTime() {
       break;
   }
 }
+
+// End Game
 
 // Handle game lost state
 function gameLost() {
