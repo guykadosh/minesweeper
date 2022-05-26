@@ -1,5 +1,7 @@
 'use strict';
 
+// DOM - render variables
+
 const MINE_ICON = '<i class="fa-solid fa-bomb"></i>';
 const FLAG_ICON = '<i class="fa-brands fa-font-awesome"></i>';
 const ALIVE_ICON = '<i class="fa-regular fa-face-smile"></i>';
@@ -147,4 +149,21 @@ function flickerCell(elCell, cell, milliSecs) {
 function renderModeTitle(Txt) {
   const elModeTitle = document.querySelector('.mode-title');
   elModeTitle.innerHTML = Txt;
+}
+
+function renderBestTime() {
+  const elBestTime = document.querySelector('.best-time');
+  console.log(elBestTime);
+
+  switch (gLevel.SIZE) {
+    case 4:
+      elBestTime.innerText = `Beginner: ${convertMsToTime(gBestTimeBeginner)}`;
+      break;
+    case 8:
+      elBestTime.innerText = `Medium: ${convertMsToTime(gBestTimeMedium)}`;
+      break;
+    case 12:
+      elBestTime.innerText = `Expert: ${convertMsToTime(gBestTimeExpert)}`;
+      break;
+  }
 }

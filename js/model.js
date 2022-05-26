@@ -1,5 +1,7 @@
 'use strict';
 
+// Model - Global variables
+
 // Game state
 const gGame = {
   isOn: false,
@@ -17,6 +19,12 @@ const gGame = {
   is7Boom: false,
 };
 
+// Score variables
+var gBestTimeBeginner = localStorage.getItem('bestTimeBeginner');
+var gBestTimeMedium = localStorage.getItem('bestTimeMedium');
+var gBestTimeExpert = localStorage.getItem('bestTimeExpert');
+var gStartTime, gEndTime;
+
 var gBoard;
 var gInterval;
 
@@ -24,6 +32,8 @@ const gLevel = {
   SIZE: 4,
   MINES: 2,
 };
+
+// Model - functions
 
 // Builds the board
 function buildBoard() {

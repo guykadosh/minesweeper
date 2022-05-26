@@ -71,11 +71,20 @@ function convertMsToTime(milliseconds) {
     milliseconds % 1000
   )
     .toString()
-    .substring(0, 3)}`;
+    .substring(0, 3)
+    .padStart(3, '0')}`;
 }
 
 function getRandomIntInc(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+// Check end time
+function getEndtime() {
+  gEndTime = new Date();
+  var timeDiff = gEndTime - gStartTime; //in ms
+  // strip the ms
+  return timeDiff;
 }

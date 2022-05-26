@@ -6,6 +6,9 @@ function initGame() {
   gBoard = buildBoard();
   renderBoard(gBoard);
 
+  // Reset moves
+  gGame.moves = [];
+
   // Stop and clear timer
   clearInterval(gInterval);
   const elTimer = document.querySelector('.timer');
@@ -27,6 +30,7 @@ function initGame() {
   renderHints();
 
   renderModeTitle('Normal Mode');
+  renderBestTime();
 }
 
 // Start game on first move
@@ -35,6 +39,8 @@ function startGame(isModed = false) {
   if (!isModed) setMines(gBoard, gLevel.MINES);
   renderModeTitle(GAME_ON_TITLE);
   setMinesNegsCount(gBoard);
+
+  gStartTime = new Date();
   startTimer();
 }
 
@@ -250,6 +256,9 @@ function gameWon() {
   // DOM
   renderGameState(WON_ICON);
   renderModeTitle('Well Done!');
+
+  // Check if best score
+  checkBestTime();
 }
 
 // Initialize and render timer
@@ -257,16 +266,11 @@ function startTimer() {
   // Clear if there is previous interval
   clearInterval(gInterval);
 
-  // Milliseconds model
-  var ms = 0;
-
   gInterval = setInterval(function () {
-    // Update Model
-    ms += 59;
-
+    var timeDiffMs = Date.now() - gStartTime;
     // Update DOM
     var elTimer = document.querySelector('.timer');
-    elTimer.innerText = convertMsToTime(ms);
+    elTimer.innerText = convertMsToTime(timeDiffMs);
   }, 59);
 }
 
@@ -284,6 +288,7 @@ function setManualMode() {
   renderModeTitle(`Costume Mode: ${gGame.manualMinesCount} left to place`);
 }
 
+// Handle user picked 7-Boom mode
 function set7BoomMode() {
   if (gGame.isOn) {
     renderModeTitle(`Restart Game first`);
@@ -297,17 +302,44 @@ function set7BoomMode() {
   renderModeTitle(SEVEN_BOOM_TITLE);
 }
 
+// Hides back any last move
 function undoMove() {
-  if (!gGame.isOn) return;
+  if (!gGame.isOn || !gGame.moves.length) return;
 
-  var lastMoves = gGame.moves.pop();
-  if (Array.isArray(lastMoves)) {
-    lastMoves.forEach(move => {
+  var lastMove = gGame.moves.pop();
+  if (Array.isArray(lastMove)) {
+    lastMove.forEach(move => {
       move.cell.isShown = false;
       hideCellByLoc(move.location);
     });
   } else {
-    lastMoves.cell.isShown = false;
-    hideCellByLoc(lastMoves.location);
+    lastMove.cell.isShown = false;
+    hideCellByLoc(lastMove.location);
+  }
+}
+
+function checkBestTime() {
+  var time = getEndtime();
+  console.log('checking time...');
+  switch (gLevel.SIZE) {
+    case 4:
+      if (!gBestTimeBeginner) localStorage.setItem('bestTimeBeginner', time);
+      if (gBestTimeBeginner > time)
+        localStorage.setItem('bestTimeBeginner', time);
+      gBestTimeBeginner = localStorage.getItem('bestTimeBeginner');
+      renderBestTime();
+      break;
+    case 8:
+      if (!gBestTimeMedium) localStorage.setItem('bestTimeMedium', time);
+      if (gBestTimeMedium > time) localStorage.setItem('bestTimeMedium', time);
+      gBestTimeMedium = localStorage.getItem('bestTimeMedium');
+      renderBestTime();
+      break;
+    case 12:
+      if (!gBestTimeExpert) localStorage.setItem('bestTimeExpert', time);
+      if (gBestTimeExpert > time) localStorage.setItem('bestTimeExpert', time);
+      gBestTimeExpert = localStorage.getItem('bestTimeExpert');
+      renderBestTime();
+      break;
   }
 }
