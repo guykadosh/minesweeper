@@ -1,0 +1,37 @@
+/* Board Design */
+
+.game-board {
+  display: flex;
+  gap: 36px;
+  margin-bottom: 96px;
+}
+
+.board-container {
+  width: 500px;
+}
+
+table {
+  box-shadow: 0px 1px 7px 0px rgb(0 0 0 / 50%);
+  margin: auto;
+  border-radius: 3px;
+  /* margin-bottom: 48px; */
+}
+
+.cell {
+  height: 35px;
+  width: 35px;
+  text-align: center;
+  border: 1px solid #354259;
+  border-radius: 3px;
+}
+
+.cell--hidden {
+  background-color: #74857dd3;
+  border: 1px solid #354259;
+  box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+    7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+}
+
+.cell--shown {
+  background-color: #f9fcfa;
+}

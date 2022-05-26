@@ -1,0 +1,63 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 1000px;
+  margin: 0 auto;
+  /* gap: 20px; */
+}
+
+.page {
+  margin: 64px 0;
+  display: flex;
+  gap: 36px;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+
+header {
+  display: flex;
+  gap: 36px;
+  flex-direction: column;
+}
+
+.box {
+  display: flex;
+  gap: 64px;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #f9fcfa;
+  padding: 15px;
+  border-radius: 9px;
+  background-color: #e1efe8;
+}
+
+table {
+  margin-bottom: 16px;
+}
+
+.game-levels {
+  margin-top: 326px;
+  text-align: center;
+}
+
+.game-levels h2 {
+  margin-top: 16px;
+}
+
+.btn-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.helpers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+  text-align: center;
+  margin-top: 326px;
+}

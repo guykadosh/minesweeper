@@ -25,6 +25,9 @@
     <!-- <script src="https://unpkg.com/phosphor-icons"></script> -->
 
     <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/buttons.css" />
+    <link rel="stylesheet" href="css/board.css" />
+    <link rel="stylesheet" href="css/layout.css" />
 
     <script defer src="js/utils.js"></script>
     <script defer src="js/model.js"></script>
@@ -34,60 +37,86 @@
     <title>Minesweeper</title>
   </head>
   <body onload="initGame()">
-    <div class="page">
-      <h1>Minesweeper <i class="fa-solid fa-bomb"> </i></h1>
-
-      <!-- <i class="fa-regular fa-face-smile"></i>
-        <i class="fa-regular fa-face-dizzy"></i>
-        <i class="ph-smiley-nervous"></i> -->
-
-      <div class="box">
-        <div class="lives-container">
-          <h2>Lives left:</h2>
-          <span class="lives">
-            <i class="fa-solid fa-heart"></i>
-            <i class="fa-solid fa-heart"></i>
-            <i class="fa-solid fa-heart"></i>
-          </span>
+    <div class="grid">
+      <div class="game-levels">
+        <h2>Choose level:</h2>
+        <div class="btn-container">
+          <button
+            class="custom-btn btn"
+            data-level="4"
+            onclick="changeBoard(this)"
+          >
+            <span>Begginer <i class="fa-solid fa-baby"></i></span>
+          </button>
+          <button
+            class="custom-btn btn"
+            data-level="8"
+            onclick="changeBoard(this)"
+          >
+            <span>Medium <i class="fa-regular fa-user"></i></span>
+          </button>
+          <button
+            class="custom-btn btn"
+            data-level="12"
+            onclick="changeBoard(this)"
+          >
+            <span>Expert <i class="fa-solid fa-user-tie"></i></span>
+          </button>
         </div>
 
-        <div class="game-state" onclick="initGame()">
-          <span class="icon"><i class="fa-regular fa-face-smile"></i></span>
-        </div>
-
-        <div class="timer-container">
-          <h2><i class="fa-solid fa-clock"></i> Time:</h2>
-          <p class="timer">00:00:00</p>
+        <h2>Modes:</h2>
+        <div class="btn-container">
+          <button class="custom-btn btn" onclick="set7BoomMode()">
+            7-Boom
+          </button>
+          <button class="custom-btn btn" onclick="setManualMode()">
+            <i class="fa-solid fa-arrows-up-down-left-right"></i> Costume
+          </button>
         </div>
       </div>
 
-      <div class="features">
-        <div class="game-levels">
-          <h2>Choose level:</h2>
-          <div class="btn-container">
-            <button
-              class="custom-btn btn"
-              data-level="4"
-              onclick="changeBoard(this)"
-            >
-              <span>Begginer <i class="fa-solid fa-baby"></i></span>
-            </button>
-            <button
-              class="custom-btn btn"
-              data-level="8"
-              onclick="changeBoard(this)"
-            >
-              <span>Medium <i class="fa-regular fa-user"></i></span>
-            </button>
-            <button
-              class="custom-btn btn"
-              data-level="12"
-              onclick="changeBoard(this)"
-            >
-              <span>Expert <i class="fa-solid fa-user-tie"></i></span>
-            </button>
+      <div class="page">
+        <header>
+          <h1>Minesweeper <i class="fa-solid fa-bomb"> </i></h1>
+
+          <div class="box">
+            <div class="lives-container">
+              <h2>Lives left:</h2>
+              <span class="lives">
+                <i class="fa-solid fa-heart"></i>
+                <i class="fa-solid fa-heart"></i>
+                <i class="fa-solid fa-heart"></i>
+              </span>
+            </div>
+
+            <div class="game-state" onclick="initGame()">
+              <span class="icon"><i class="fa-regular fa-face-smile"></i></span>
+            </div>
+
+            <div class="timer-container">
+              <h2><i class="fa-solid fa-clock"></i> Time:</h2>
+              <p class="timer">00:00:00</p>
+            </div>
           </div>
+        </header>
+
+        <div class="mode-box">
+          <h2 class="mode-title">Normal Mode</h2>
         </div>
+
+        <div class="board-container">
+          <table>
+            <tbody class="board"></tbody>
+          </table>
+          <!-- not valid yet -->
+          <button class="btn-undo">
+            <span class="label"> Undo</span>
+            <span class="icon"> <i class="fa-solid fa-rotate-left"></i></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="helpers">
         <div class="hints-container">
           <h2>Hints:</h2>
           <div class="hints">
@@ -102,31 +131,9 @@
             ></span>
           </div>
         </div>
-      </div>
-      <div class="mode-box">
-        <h2 class="mode-title">Normal Mode</h2>
-      </div>
-      <div class="game-board">
-        <div class="board-container">
-          <table>
-            <tbody class="board"></tbody>
-          </table>
-        </div>
-        <div class="btns-container">
-          <!-- not valid yet -->
-          <button class="custom-btn btn" style="color: red">
-            <i class="fa-solid fa-rotate-left"></i> Undo
-          </button>
-          <button class="custom-btn btn" onclick="showSafeCell(this)">
-            3 Safe Clicks
-          </button>
-          <button class="custom-btn btn" onclick="set7BoomMode()">
-            7-Boom
-          </button>
-          <button class="custom-btn btn" onclick="setManualMode()">
-            <i class="fa-solid fa-arrows-up-down-left-right"></i> Costume
-          </button>
-        </div>
+        <button class="btn--safe" onclick="showSafeCell(this)">
+          <span>3 Safe Clicks</span>
+        </button>
       </div>
     </div>
 

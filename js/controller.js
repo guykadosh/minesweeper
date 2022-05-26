@@ -18,6 +18,9 @@ function initGame() {
   gGame.livesCount = 3;
   renderLives();
 
+  gGame.hintsCount = 3;
+  renderHints();
+
   renderModeTitle('Normal Mode');
 
   gGame.is7BoomMode = false;
@@ -28,7 +31,7 @@ function initGame() {
 function startGame(isModed = false) {
   gGame.isOn = true;
   if (!isModed) setMines(gBoard, gLevel.MINES);
-  // if (isModed) renderModeTitle('Costume Game Started');
+  renderModeTitle('Flag all the mines to win');
   setMinesNegsCount(gBoard);
   startTimer();
 }
@@ -62,7 +65,6 @@ function cellClicked(elCell, i, j) {
   if (gGame.is7BoomMode) {
     startGame(true);
     gGame.is7BoomMode = false;
-    return;
   }
 
   if (!gGame.isOn) startGame();

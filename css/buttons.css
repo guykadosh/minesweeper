@@ -1,0 +1,180 @@
+/* General button desgin i took from free source */
+/* button {
+  margin: 5px;
+} */
+
+.custom-btn {
+  width: 110px;
+  height: 40px;
+  color: #354259;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lobster', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+    7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+.btn {
+  background: linear-gradient(0deg, #35425937 0%, #c2ded1 100%);
+  line-height: 42px;
+  padding: 0;
+  border: none;
+}
+.btn span {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.btn:before,
+.btn:after {
+  position: absolute;
+  content: '';
+  right: 0;
+  bottom: 0;
+  background: #354259;
+  box-shadow: -7px -7px 20px 0px rgba(255, 255, 255, 0.9),
+    -4px -4px 5px 0px rgba(255, 255, 255, 0.9),
+    7px 7px 20px 0px rgba(0, 0, 0, 0.2), 4px 4px 5px 0px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+.btn:before {
+  height: 0%;
+  width: 2px;
+}
+.btn:after {
+  width: 0%;
+  height: 2px;
+}
+.btn:hover {
+  color: #354259;
+  background: transparent;
+}
+.btn:hover:before {
+  height: 100%;
+}
+.btn:hover:after {
+  width: 100%;
+}
+.btn span:before,
+.btn span:after {
+  position: absolute;
+  content: '';
+  left: 0;
+  top: 0;
+  background: #354259;
+  box-shadow: -7px -7px 20px 0px rgba(255, 255, 255, 0.9),
+    -4px -4px 5px 0px rgba(255, 255, 255, 0.9),
+    7px 7px 20px 0px rgba(0, 0, 0, 0.2), 4px 4px 5px 0px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+.btn span:before {
+  width: 2px;
+  height: 0%;
+}
+.btn span:after {
+  height: 2px;
+  width: 0%;
+}
+.btn span:hover:before {
+  height: 100%;
+}
+.btn span:hover:after {
+  width: 100%;
+}
+
+/* Safe- btn */
+.btn--safe {
+  background-color: #f9fcfa;
+  border: 2px solid #354259;
+  border-radius: 30px;
+  width: 100px;
+  box-shadow: #354259 4px 4px 0 0;
+  color: #354259;
+  cursor: pointer;
+  display: inline-block;
+  font-family: 'Lobster', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  padding: 0 18px;
+  line-height: 50px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.btn--safe:hover {
+  background-color: #fff;
+}
+
+.btn--safe:active {
+  box-shadow: #422800 2px 2px 0 0;
+  transform: translate(2px, 2px);
+}
+
+/* Undo Btn */
+.btn-undo {
+  position: relative;
+  font-size: 12px;
+  width: 100px;
+  letter-spacing: 2px;
+  height: 3em;
+  /* padding: 0 3em; */
+  border: none;
+  background-color: #354259d0;
+  color: #fff;
+  text-transform: uppercase;
+  overflow: hidden;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+.btn-undo::before {
+  content: '';
+  display: block;
+  position: absolute;
+  z-index: 0;
+  bottom: 0;
+  left: 0;
+  height: 0px;
+  width: 100%;
+  background: #ece5c7;
+  background: linear-gradient(90deg, #cdc2ae7c 20%, #cdc2ae85 100%);
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.btn-undo .label {
+  position: relative;
+}
+
+.btn-undo .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3em;
+  width: 3em;
+  position: absolute;
+  top: 3em;
+  right: 0;
+  opacity: 0;
+  transition: 0.4s;
+}
+
+.btn-undo:hover::before {
+  height: 100%;
+}
+
+.btn-undo:hover .icon {
+  top: 0;
+  opacity: 1;
+}
