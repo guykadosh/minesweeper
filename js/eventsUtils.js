@@ -158,7 +158,7 @@ function expandShown(board, rowIdx, colIdx) {
 
       // Model
       currCell.isShown = true;
-
+      gGame.shownCount++;
       // DOM
       showCellByLoc({ i, j });
 

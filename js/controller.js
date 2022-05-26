@@ -24,6 +24,10 @@ function initGame() {
   gGame.is7BoomMode = false;
   gGame.isManual = false;
 
+  // Reset Counts
+  gGame.shownCount = 0;
+  gGame.markedCount = 0;
+
   // Initialize game state and helpers
   renderGameState(ALIVE_ICON);
 
@@ -102,7 +106,7 @@ function cellClicked(elCell, i, j) {
   // Show Cell
   // Update Model
   clickedCell.isShown = true;
-  // gGame.shownCount++;
+  gGame.shownCount++;
 
   // Update DOM
   showCell(elCell, clickedCell);
@@ -116,13 +120,16 @@ function cellClicked(elCell, i, j) {
     gGame.moves.push({ cell: clickedCell, location: { i, j } });
     // considered as a marked mine
     clickedCell.isMarked = true;
-    // gGame.markedCount++;
+    gGame.markedCount++;
 
+    // Worried emoji on last chance
     if (gGame.livesCount === 1) renderGameState(DYING_ICON);
 
-    if (!gGame.livesCount) {
-      gameLost();
-    }
+    // When relevant  check if game won(clicked last mine but still has lives)
+    if (gGame.markedCount >= gLevel.MINES && checkGameOver()) gameWon();
+
+    // Lose game when out of lifes
+    if (!gGame.livesCount) gameLost();
 
     return;
   }
@@ -135,8 +142,9 @@ function cellClicked(elCell, i, j) {
     gGame.moves.push({ cell: clickedCell, location: { i, j } });
   }
 
-  // Check if game Won
-  if (checkGameOver()) gameWon();
+  // When relevant  check if game won
+  if (gGame.shownCount >= gLevel.SIZE ** 2 - gLevel.MINES && checkGameOver())
+    gameWon();
 }
 
 // Handle right clicks on a cell to add/remove flags
@@ -154,7 +162,7 @@ function cellMarked(ev, elCell) {
   // Unmark
   if (curCell.isMarked) {
     curCell.isMarked = false;
-    // gGame.markedCount--;
+    gGame.markedCount--;
 
     elCell.innerHTML = '';
     return;
@@ -162,13 +170,13 @@ function cellMarked(ev, elCell) {
 
   // Update model
   curCell.isMarked = true;
-  // gGame.markedCount++;
+  gGame.markedCount++;
 
   // Update DOM
   elCell.innerHTML = `<span style="color:#fff">${FLAG_ICON}</span>`;
 
-  // Check if game Won
-  if (checkGameOver()) gameWon();
+  // When relevant  check if game won
+  if (gGame.markedCount > gLevel.MINES && checkGameOver()) gameWon();
 }
 
 function hintClicked(elHint) {
@@ -228,12 +236,14 @@ function undoMove() {
   if (Array.isArray(lastMove)) {
     lastMove.forEach(move => {
       move.cell.isShown = false;
-      // gGame.shownCount--;
+      gGame.shownCount--;
       hideCellByLoc(move.location);
     });
   } else {
     lastMove.cell.isShown = false;
-    // gGame.shownCount--;
+    gGame.shownCount--;
+    if (lastMove.cell.isMine) gGame.livesCount++;
+    renderLives();
     hideCellByLoc(lastMove.location);
   }
 }
