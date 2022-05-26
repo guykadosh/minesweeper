@@ -51,7 +51,9 @@ function getSafeCellLoc() {
   const safeCells = [];
   for (var i = 0; i < gBoard.length; i++) {
     for (var j = 0; j < gBoard[0].length; j++) {
-      if (!gBoard[i][j].isMine) safeCells.push({ i, j });
+      if (!gBoard[i][j].isMine && !gBoard[i][j].isShown) {
+        safeCells.push({ i, j });
+      }
     }
   }
 
