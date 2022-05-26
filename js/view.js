@@ -16,7 +16,7 @@ const DYING_ICON = '<i class="fa-regular fa-face-surprise"></i>';
 const HINT_HTML = `<span class="hint" onclick="hintClicked(this)"
 ><i class="fa-regular fa-lightbulb"></i
 ></span>`;
-const GAME_ON_TITLE = `${FLAG_ICON} Flag All the mines to win`;
+const GAME_ON_TITLE = `${FLAG_ICON} Flag all mines to win`;
 const SEVEN_BOOM_TITLE = '7 Boom Mode';
 
 // Render the board as a <table>

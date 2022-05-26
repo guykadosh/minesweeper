@@ -184,7 +184,7 @@ function hintClicked(elHint) {
 
 // Handle manual mode
 function setManualMode() {
-  if (checkGameOver()) return;
+  if (checkNonMinesShown()) return;
 
   if (gGame.isOn) {
     guardMsg();
@@ -199,7 +199,7 @@ function setManualMode() {
 
 // Handle user picked 7-Boom mode
 function set7BoomMode() {
-  if (checkGameOver()) return;
+  if (checkNonMinesShown()) return;
 
   if (gGame.isOn) {
     guardMsg();

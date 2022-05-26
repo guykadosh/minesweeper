@@ -92,11 +92,17 @@ function gameWon() {
     for (var j = 0; j < gBoard[0].length; j++) {
       if (gBoard[i][j].isShown) continue;
 
-      // Model
-      gBoard[i][j].isMarked = true;
-
-      // DOM
-      renderMarkByLoc({ i, j });
+      if (gBoard[i][j].isMine) {
+        // Model
+        gBoard[i][j].isMarked = true;
+        // DOM
+        renderMarkByLoc({ i, j });
+      } else {
+        // Model
+        gBoard[i][j].isShown = true;
+        // DOM
+        showCellByLoc({ i, j });
+      }
     }
   }
 
@@ -106,10 +112,29 @@ function gameWon() {
 
 // Checks if user won the game
 function checkGameOver() {
+  // first condition - all non mines are revealed
+  // second condition - if not all revealed but all mines are flagged
+
+  return checkNonMinesShown() || checkMinesFlagged();
+}
+
+function checkNonMinesShown() {
   for (var i = 0; i < gBoard.length; i++) {
     for (var j = 0; j < gBoard[0].length; j++) {
       var curCell = gBoard[i][j];
       if (!curCell.isShown && !curCell.isMine) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+function checkMinesFlagged() {
+  for (var i = 0; i < gBoard.length; i++) {
+    for (var j = 0; j < gBoard[0].length; j++) {
+      var curCell = gBoard[i][j];
+      if (curCell.isMine && !curCell.isMarked) {
         return false;
       }
     }
