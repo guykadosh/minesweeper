@@ -23,7 +23,7 @@ table {
   text-align: center;
   border: 1px solid #354259;
   border-radius: 3px;
-  transition: all 0.5s;
+  transition: all 0.8s;
 }
 
 .cell--hidden {
