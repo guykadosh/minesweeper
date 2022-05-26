@@ -16,6 +16,11 @@ h1 {
   font-size: 48px;
 }
 
+.box {
+  border: 3px solid #f9fcfa;
+  background-color: #e1efe8;
+}
+
 .game-state {
   height: 80px;
   width: 80px;

@@ -2,17 +2,22 @@
 
 // This is called when page loads
 function initGame() {
+  // Re/Build board
   gBoard = buildBoard();
   renderBoard(gBoard);
 
+  // Stop and clear timer
   clearInterval(gInterval);
-
-  gGame.isOn = false;
-  gGame.isOver = false;
-
   const elTimer = document.querySelector('.timer');
   elTimer.innerText = '00:00:00';
 
+  // Reset Game modes
+  gGame.isOn = false;
+  gGame.isOver = false;
+  gGame.is7BoomMode = false;
+  gGame.isManual = false;
+
+  // Initialize game state and helpers
   renderGameState(ALIVE_ICON);
 
   gGame.livesCount = 3;
@@ -22,16 +27,13 @@ function initGame() {
   renderHints();
 
   renderModeTitle('Normal Mode');
-
-  gGame.is7BoomMode = false;
-  gGame.isManual = false;
 }
 
 // Start game on first move
 function startGame(isModed = false) {
   gGame.isOn = true;
   if (!isModed) setMines(gBoard, gLevel.MINES);
-  renderModeTitle('Flag all the mines to win');
+  renderModeTitle(GAME_ON_TITLE);
   setMinesNegsCount(gBoard);
   startTimer();
 }
@@ -42,31 +44,38 @@ function cellClicked(elCell, i, j) {
 
   var clickedCell = gBoard[i][j];
 
-  if (gGame.isManual) {
+  // Handle manual building board clicks
+  if (gGame.isManual && gGame.manualMinesCount) {
     // Model
     gGame.manualMinesCount--;
     clickedCell.isMine = true;
 
     // DOM
     showCell(elCell, clickedCell);
-    // const elModeTitle = document.querySelector('.mode-title');
-    // elModeTitle.innerText = `Costume Mode: ${gGame.manualMinesCount} left to place`;
     renderModeTitle(`Costume Mode: ${gGame.manualMinesCount} left to place`);
-    // Hide Board and starts when last mine is placed
+
+    // Hide Board
     if (gGame.manualMinesCount === 0) {
-      gGame.isManual = false;
       renderBoard(gBoard);
-      startGame(true);
+      renderModeTitle('Ready to start');
     }
 
     return;
   }
 
+  // Once done building manually board start the game
+  if (gGame.isManual && !gGame.manualMinesCount) {
+    gGame.isManual = false;
+    startGame(true);
+  }
+
+  // Handle 7 Boom mode
   if (gGame.is7BoomMode) {
     startGame(true);
     gGame.is7BoomMode = false;
   }
 
+  //  Start normal mode
   if (!gGame.isOn) startGame();
 
   // ignore clicks on shown cells
@@ -79,21 +88,25 @@ function cellClicked(elCell, i, j) {
     return;
   }
 
+  // Show Cell
   // Update Model
   clickedCell.isShown = true;
 
   // Update DOM
   showCell(elCell, clickedCell);
 
-  // Hangle mine clicks
+  // Handle mine clicks
   if (clickedCell.isMine) {
     gGame.livesCount--;
     renderLives();
 
-    // considered as marked mine
+    // Push to last moves
+    gGame.moves.push({ cell: clickedCell, location: { i, j } });
+    // considered as a marked mine
     clickedCell.isMarked = true;
 
     if (gGame.livesCount === 1) renderGameState(DYING_ICON);
+
     if (!gGame.livesCount) {
       gameLost();
     }
@@ -102,8 +115,14 @@ function cellClicked(elCell, i, j) {
   }
 
   // handle cell with no mines around
-  if (clickedCell.minesAroundCount === 0) expandShown(gBoard, i, j);
+  if (clickedCell.minesAroundCount === 0) {
+    gGame.moves.push([{ cell: clickedCell, location: { i, j } }]);
+    expandShown(gBoard, i, j);
+  } else {
+    gGame.moves.push({ cell: clickedCell, location: { i, j } });
+  }
 
+  console.log(gGame.moves);
   // Check if game Won
   if (checkGameOver()) gameWon();
 }
@@ -156,6 +175,10 @@ function expandShown(board, rowIdx, colIdx) {
       showCellByLoc({ i, j });
 
       if (currCell.minesAroundCount === 0) expandShown(board, i, j);
+      gGame.moves[gGame.moves.length - 1].push({
+        cell: currCell,
+        location: { i, j },
+      });
     }
   }
 }
@@ -163,7 +186,9 @@ function expandShown(board, rowIdx, colIdx) {
 function hintClicked(elHint) {
   if (gGame.isHintOn) return;
 
+  // User instructions
   renderModeTitle('Pick a cell for a hint');
+
   // Model
   gGame.isHintOn = true;
   gGame.hintsCount--;
@@ -211,6 +236,7 @@ function gameLost() {
 
   // DOM
   renderGameState(DEAD_ICON);
+  renderModeTitle('You Got Bombed!');
 }
 
 // Handle game won state
@@ -223,6 +249,7 @@ function gameWon() {
 
   // DOM
   renderGameState(WON_ICON);
+  renderModeTitle('Well Done!');
 }
 
 // Initialize and render timer
@@ -245,16 +272,42 @@ function startTimer() {
 
 // Handle manual mode
 function setManualMode() {
+  if (gGame.isOn) {
+    renderModeTitle(`Restart Game first`);
+    setTimeout(() => renderModeTitle(GAME_ON_TITLE), 800);
+    return;
+  }
+
   gGame.isManual = true;
   gGame.manualMinesCount = gLevel.MINES;
-  // const elModeTitle = document.querySelector('.mode-title');
-  // elModeTitle.innerText = `Costume Mode: ${gGame.manualMinesCount} left to place`;
+
   renderModeTitle(`Costume Mode: ${gGame.manualMinesCount} left to place`);
 }
 
 function set7BoomMode() {
+  if (gGame.isOn) {
+    renderModeTitle(`Restart Game first`);
+    setTimeout(() => renderModeTitle(GAME_ON_TITLE), 800);
+    return;
+  }
+
   gGame.is7BoomMode = true;
   gBoard = buildBoard();
   set7BoomMines(gBoard);
-  renderModeTitle('7 Boom Mode');
+  renderModeTitle(SEVEN_BOOM_TITLE);
+}
+
+function undoMove() {
+  if (!gGame.isOn) return;
+
+  var lastMoves = gGame.moves.pop();
+  if (Array.isArray(lastMoves)) {
+    lastMoves.forEach(move => {
+      move.cell.isShown = false;
+      hideCellByLoc(move.location);
+    });
+  } else {
+    lastMoves.cell.isShown = false;
+    hideCellByLoc(lastMoves.location);
+  }
 }

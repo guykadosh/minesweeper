@@ -67,10 +67,12 @@
         <h2>Modes:</h2>
         <div class="btn-container">
           <button class="custom-btn btn" onclick="set7BoomMode()">
-            7-Boom
+            <span> 7-Boom </span>
           </button>
           <button class="custom-btn btn" onclick="setManualMode()">
-            <i class="fa-solid fa-arrows-up-down-left-right"></i> Costume
+            <span>
+              <i class="fa-solid fa-arrows-up-down-left-right"></i> Costume
+            </span>
           </button>
         </div>
       </div>
@@ -108,8 +110,7 @@
           <table>
             <tbody class="board"></tbody>
           </table>
-          <!-- not valid yet -->
-          <button class="btn-undo">
+          <button class="btn-undo" onclick="undoMove()">
             <span class="label"> Undo</span>
             <span class="icon"> <i class="fa-solid fa-rotate-left"></i></span>
           </button>
@@ -117,6 +118,10 @@
       </div>
 
       <div class="helpers">
+        <div class="bestscore-container">
+          <h2><i class="fa-solid fa-medal"></i> Best Score:</h2>
+          <p class="bestscore">00:00:00</p>
+        </div>
         <div class="hints-container">
           <h2>Hints:</h2>
           <div class="hints">

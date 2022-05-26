@@ -25,10 +25,9 @@ header {
   gap: 64px;
   align-items: center;
   justify-content: center;
-  border: 3px solid #f9fcfa;
+
   padding: 15px;
   border-radius: 9px;
-  background-color: #e1efe8;
 }
 
 table {

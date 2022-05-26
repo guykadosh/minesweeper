@@ -10,6 +10,8 @@ const DYING_ICON = '<i class="fa-regular fa-face-surprise"></i>';
 const HINT_HTML = `<span class="hint" onclick="hintClicked(this)"
 ><i class="fa-regular fa-lightbulb"></i
 ></span>`;
+const GAME_ON_TITLE = `${FLAG_ICON} Flag All the mines to win`;
+const SEVEN_BOOM_TITLE = '7 Boom Mode';
 
 // Render the board as a <table>
 // to the page
@@ -36,7 +38,7 @@ function renderBoard(board) {
   elBoard.innerHTML = strHTML;
 }
 
-// render cell by given location
+// Show cell by given location
 function showCellByLoc(location) {
   // get model
   var cell = gBoard[location.i][location.j];
@@ -48,6 +50,7 @@ function showCellByLoc(location) {
   showCell(elCell, cell);
 }
 
+// Hide cell by given location
 function hideCellByLoc(location) {
   // get DOM
   var cellId = '#' + getIdName(location);
@@ -88,6 +91,7 @@ function renderLives() {
   elLives.innerHTML = strHTML;
 }
 
+// Rerender hints
 function renderHints() {
   const elHints = document.querySelector('.hints');
   var strHTML = '';
@@ -103,6 +107,7 @@ function renderGameState(value) {
   elGameState.innerHTML = value;
 }
 
+// Shows random safe cell for 2 seconds
 function showSafeCell(elBtn) {
   if (!gGame.safeCount) return;
 
@@ -118,6 +123,7 @@ function showSafeCell(elBtn) {
   }, 2000);
 }
 
+// flicker user picked cell for hint
 function flickerCell(elCell, cell, milliSecs) {
   elCell.classList.remove('cell--hidden');
   elCell.classList.add('cell--shown');
@@ -131,14 +137,14 @@ function flickerCell(elCell, cell, milliSecs) {
 
   setTimeout(() => {
     hideCell(elCell);
-    renderModeTitle('Game is on');
+    renderModeTitle(GAME_ON_TITLE);
 
     renderHints();
   }, 200);
 }
 
-// Render Mode title
+// Render Mode title and user instructions
 function renderModeTitle(Txt) {
   const elModeTitle = document.querySelector('.mode-title');
-  elModeTitle.innerText = Txt;
+  elModeTitle.innerHTML = Txt;
 }

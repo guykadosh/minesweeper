@@ -43,6 +43,7 @@ function buildBoard() {
   return board;
 }
 
+// Set mines at random places with given mine count
 function setMines(board, minesCount) {
   for (var i = 0; i < minesCount; i++) {
     var idxRow = getRandomIntInc(0, gLevel.SIZE - 1);
@@ -56,7 +57,7 @@ function setMines(board, minesCount) {
   }
 }
 
-//TODO: Count mines around each cell
+// Count mines around each cell
 // and set the cell's
 // minesAroundCount
 function setMinesNegsCount(board) {
@@ -69,6 +70,7 @@ function setMinesNegsCount(board) {
   }
 }
 
+// Set mines on board on 7 boom mode
 function set7BoomMines(board) {
   var count = 0;
   for (var i = 0; i < board.length; i++) {
@@ -82,6 +84,7 @@ function set7BoomMines(board) {
   console.log(board);
 }
 
+// Changes board size by picked level by user
 function changeBoard(elBtn) {
   console.log('clicked');
   if (gLevel.SIZE === +elBtn.dataset.level) return;
