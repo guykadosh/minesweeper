@@ -1,150 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <script
-      defer
-      src="https://kit.fontawesome.com/0d3f998bf1.js"
-      crossorigin="anonymous"
-    ></script>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Space Invaders</title>
+</head>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Akshar&family=Lobster&display=swap"
-      rel="stylesheet"
-    />
+<body onload="init()" onkeyup="onKeyDown(event)">
 
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"
-    />
-    <!-- <script src="https://unpkg.com/phosphor-icons"></script> -->
+    <h1>Space Invaders Challenge</h1>
 
-    <link rel="stylesheet" href="css/main.css" />
-    <link rel="stylesheet" href="css/buttons.css" />
-    <link rel="stylesheet" href="css/board.css" />
-    <link rel="stylesheet" href="css/layout.css" />
+    <h3>Score: <span></span></h3>
 
-    <script defer src="js/utils.js"></script>
-    <script defer src="js/eventsUtils.js"></script>
-    <script defer src="js/model.js"></script>
-    <script defer src="js/view.js"></script>
-    <script defer src="js/controller.js"></script>
+    <button onclick="restartGame()">Start Game</button>
 
-    <title>Minesweeper</title>
-  </head>
-  <body onload="initGame()">
-    <div class="grid">
-      <div class="game-levels">
-        <h2>Choose level:</h2>
-        <div class="btn-container">
-          <button
-            class="custom-btn btn"
-            data-level="4"
-            onclick="changeBoard(this)"
-          >
-            <span>Beginner <i class="fa-solid fa-baby"></i></span>
-          </button>
-          <button
-            class="custom-btn btn"
-            data-level="8"
-            onclick="changeBoard(this)"
-          >
-            <span>Medium <i class="fa-regular fa-user"></i></span>
-          </button>
-          <button
-            class="custom-btn btn"
-            data-level="12"
-            onclick="changeBoard(this)"
-          >
-            <span>Expert <i class="fa-solid fa-user-tie"></i></span>
-          </button>
-        </div>
-
-        <h2>Modes:</h2>
-        <div class="btn-container">
-          <button class="custom-btn btn" onclick="set7BoomMode()">
-            <span> 7-Boom </span>
-          </button>
-          <button class="custom-btn btn" onclick="setManualMode()">
-            <span>
-              <i class="fa-solid fa-arrows-up-down-left-right"></i> Custom
-            </span>
-          </button>
-        </div>
-      </div>
-
-      <div class="page">
-        <header>
-          <h1>Minesweeper <i class="fa-solid fa-bomb"> </i></h1>
-
-          <div class="box">
-            <div class="lives-container">
-              <h2>Lives left:</h2>
-              <span class="lives">
-                <i class="fa-solid fa-heart"></i>
-                <i class="fa-solid fa-heart"></i>
-                <i class="fa-solid fa-heart"></i>
-              </span>
-            </div>
-
-            <div class="game-state" onclick="initGame()">
-              <span class="icon"><i class="fa-regular fa-face-smile"></i></span>
-            </div>
-
-            <div class="timer-container">
-              <h2><i class="fa-solid fa-clock"></i> Time:</h2>
-              <p class="timer">00:00:00</p>
-            </div>
-          </div>
-        </header>
-
-        <div class="mode-box">
-          <h2 class="mode-title">Normal Mode</h2>
-        </div>
-
-        <div class="board-container">
-          <table>
-            <tbody class="board"></tbody>
-          </table>
-          <button class="btn-undo" onclick="undoMove()">
-            <span class="label"> Undo</span>
-            <span class="icon"> <i class="fa-solid fa-rotate-left"></i></span>
-          </button>
-        </div>
-      </div>
-
-      <div class="helpers">
-        <div class="best-time-container">
-          <h2><i class="fa-solid fa-medal"></i> Best Time:</h2>
-          <p class="best-time">00:00:00</p>
-        </div>
-        <div class="hints-container">
-          <h2>Hints:</h2>
-          <div class="hints">
-            <span class="hint" onclick="hintClicked(this)"
-              ><i class="fa-regular fa-lightbulb"></i
-            ></span>
-            <span class="hint" onclick="hintClicked(this)"
-              ><i class="fa-regular fa-lightbulb"></i
-            ></span>
-            <span class="hint" onclick="hintClicked(this)"
-              ><i class="fa-regular fa-lightbulb"></i
-            ></span>
-          </div>
-        </div>
-        <button class="btn--safe" onclick="showSafeCell(this)">
-          <span>3 Safe Clicks</span>
-        </button>
-      </div>
+    <div class="modal">
+        <h1></h1>
+        <button onclick="restartGame()"> Restart Game </button>
     </div>
 
-    <footer>
-      <p>© Coffeerights Guy Kadosh - Coding Academy May 22 - Sprint 1</p>
-    </footer>
-  </body>
+    <div class="board-container"></div>
+
+    <button onclick="freezeAliens()">Freeze Aliens</button>
+    
+    <h6>Efrat Rotem</h1>
+
+
+        <script src="js/util.js"></script>
+        <script src="js/game.js"></script>
+        <script src="js/hero.js"></script>
+        <script src="js/alien.js"></script>
+</body>
+
 </html>
