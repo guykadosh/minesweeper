@@ -20,9 +20,9 @@ const gGame = {
 };
 
 // Score variables
-var gBestTimeBeginner = localStorage.getItem('bestTimeBeginner');
-var gBestTimeMedium = localStorage.getItem('bestTimeMedium');
-var gBestTimeExpert = localStorage.getItem('bestTimeExpert');
+var gBestTimeBeginner = +localStorage.getItem('bestTimeBeginner');
+var gBestTimeMedium = +localStorage.getItem('bestTimeMedium');
+var gBestTimeExpert = +localStorage.getItem('bestTimeExpert');
 var gStartTime, gEndTime;
 
 var gBoard;
@@ -54,11 +54,14 @@ function buildBoard() {
 }
 
 // Set mines at random places with given mine count
-function setMines(board, minesCount) {
+function setMines(board, minesCount, location) {
   for (var i = 0; i < minesCount; i++) {
     var idxRow = getRandomIntInc(0, gLevel.SIZE - 1);
     var idxColumn = getRandomIntInc(0, gLevel.SIZE - 1);
-    if (board[idxRow][idxColumn].isMine) {
+    if (
+      board[idxRow][idxColumn].isMine ||
+      (idxRow == location.i && idxColumn === location.j)
+    ) {
       i--;
       continue;
     }
@@ -91,14 +94,11 @@ function set7BoomMines(board) {
       count++;
     }
   }
-  console.log(board);
 }
 
 // Changes board size by picked level by user
 function changeBoard(elBtn) {
-  console.log('clicked');
   if (gLevel.SIZE === +elBtn.dataset.level) return;
-  console.log(elBtn.dataset.level);
   gLevel.SIZE = +elBtn.dataset.level;
 
   renderModeTitle('Normal Mode');

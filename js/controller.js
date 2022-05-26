@@ -1,5 +1,9 @@
 'use strict';
 
+///////////////////////////
+/// Handle Events      ///
+/////////////////////////
+
 // This is called when page loads
 function initGame() {
   // Re/Build board
@@ -34,9 +38,9 @@ function initGame() {
 }
 
 // Start game on first move
-function startGame(isModed = false) {
+function startGame(isModed = false, location = null) {
   gGame.isOn = true;
-  if (!isModed) setMines(gBoard, gLevel.MINES);
+  if (!isModed) setMines(gBoard, gLevel.MINES, location);
   renderModeTitle(GAME_ON_TITLE);
   setMinesNegsCount(gBoard);
 
@@ -82,10 +86,10 @@ function cellClicked(elCell, i, j) {
   }
 
   //  Start normal mode
-  if (!gGame.isOn) startGame();
+  if (!gGame.isOn) startGame(false, { i, j });
 
   // ignore clicks on shown cells
-  if (clickedCell.isShown) return;
+  if (clickedCell.isShown || clickedCell.isMarked) return;
 
   // Handle Hint On
   if (gGame.isHintOn) {
@@ -128,7 +132,6 @@ function cellClicked(elCell, i, j) {
     gGame.moves.push({ cell: clickedCell, location: { i, j } });
   }
 
-  console.log(gGame.moves);
   // Check if game Won
   if (checkGameOver()) gameWon();
 }
@@ -161,37 +164,13 @@ function cellMarked(ev, elCell) {
   if (checkGameOver()) gameWon();
 }
 
-// Expand  shown cells for every cell that had no mine neighbors
-function expandShown(board, rowIdx, colIdx) {
-  for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
-    if (i < 0 || i >= board.length) continue;
-
-    for (var j = colIdx - 1; j <= colIdx + 1; j++) {
-      if (j < 0 || j >= board[i].length) continue;
-      if (i === rowIdx && j === colIdx) continue;
-
-      var currCell = board[i][j];
-
-      if (currCell.isShown) continue;
-
-      // Model
-      currCell.isShown = true;
-
-      // DOM
-      showCellByLoc({ i, j });
-
-      if (currCell.minesAroundCount === 0) expandShown(board, i, j);
-      gGame.moves[gGame.moves.length - 1].push({
-        cell: currCell,
-        location: { i, j },
-      });
-    }
-  }
-}
-
 function hintClicked(elHint) {
-  if (gGame.isHintOn) return;
+  if (!gGame.isOn) {
+    guardMsg();
+    return;
+  }
 
+  if (gGame.isHintOn) return;
   // User instructions
   renderModeTitle('Pick a cell for a hint');
 
@@ -203,82 +182,10 @@ function hintClicked(elHint) {
   elHint.style.color = '#F7D716';
 }
 
-// Checks if user won the game
-function checkGameOver() {
-  for (var i = 0; i < gBoard.length; i++) {
-    for (var j = 0; j < gBoard[0].length; j++) {
-      var curCell = gBoard[i][j];
-      if (
-        (!curCell.isMarked && curCell.isMine) ||
-        (!curCell.isShown && !curCell.isMine)
-      ) {
-        return false;
-      }
-    }
-  }
-
-  return true;
-}
-
-// Handle game lost state
-function gameLost() {
-  // Model
-  gGame.isOver = true;
-  gGame.isOn = false;
-
-  clearInterval(gInterval);
-
-  for (var i = 0; i < gBoard.length; i++) {
-    for (var j = 0; j < gBoard[0].length; j++) {
-      if (gBoard[i][j].isShown) continue;
-
-      // Model
-      gBoard[i][j].isShown = true;
-
-      // DOM
-      showCellByLoc({ i, j });
-    }
-  }
-
-  // DOM
-  renderGameState(DEAD_ICON);
-  renderModeTitle('You Got Bombed!');
-}
-
-// Handle game won state
-function gameWon() {
-  clearInterval(gInterval);
-
-  // Model
-  gGame.isOver = true;
-  gGame.isOn = false;
-
-  // DOM
-  renderGameState(WON_ICON);
-  renderModeTitle('Well Done!');
-
-  // Check if best score
-  checkBestTime();
-}
-
-// Initialize and render timer
-function startTimer() {
-  // Clear if there is previous interval
-  clearInterval(gInterval);
-
-  gInterval = setInterval(function () {
-    var timeDiffMs = Date.now() - gStartTime;
-    // Update DOM
-    var elTimer = document.querySelector('.timer');
-    elTimer.innerText = convertMsToTime(timeDiffMs);
-  }, 59);
-}
-
 // Handle manual mode
 function setManualMode() {
   if (gGame.isOn) {
-    renderModeTitle(`Restart Game first`);
-    setTimeout(() => renderModeTitle(GAME_ON_TITLE), 800);
+    guardMsg();
     return;
   }
 
@@ -291,8 +198,7 @@ function setManualMode() {
 // Handle user picked 7-Boom mode
 function set7BoomMode() {
   if (gGame.isOn) {
-    renderModeTitle(`Restart Game first`);
-    setTimeout(() => renderModeTitle(GAME_ON_TITLE), 800);
+    guardMsg();
     return;
   }
 
@@ -315,31 +221,5 @@ function undoMove() {
   } else {
     lastMove.cell.isShown = false;
     hideCellByLoc(lastMove.location);
-  }
-}
-
-function checkBestTime() {
-  var time = getEndtime();
-  console.log('checking time...');
-  switch (gLevel.SIZE) {
-    case 4:
-      if (!gBestTimeBeginner) localStorage.setItem('bestTimeBeginner', time);
-      if (gBestTimeBeginner > time)
-        localStorage.setItem('bestTimeBeginner', time);
-      gBestTimeBeginner = localStorage.getItem('bestTimeBeginner');
-      renderBestTime();
-      break;
-    case 8:
-      if (!gBestTimeMedium) localStorage.setItem('bestTimeMedium', time);
-      if (gBestTimeMedium > time) localStorage.setItem('bestTimeMedium', time);
-      gBestTimeMedium = localStorage.getItem('bestTimeMedium');
-      renderBestTime();
-      break;
-    case 12:
-      if (!gBestTimeExpert) localStorage.setItem('bestTimeExpert', time);
-      if (gBestTimeExpert > time) localStorage.setItem('bestTimeExpert', time);
-      gBestTimeExpert = localStorage.getItem('bestTimeExpert');
-      renderBestTime();
-      break;
   }
 }

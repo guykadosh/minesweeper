@@ -1,5 +1,9 @@
 'use strict';
 
+//////////////////////////////
+/// Model & general Utils ///
+////////////////////////////
+
 // Create Mat in given size(a square if only 1 size)
 function createMat(ROWS, COLS = ROWS) {
   var mat = [];
@@ -79,12 +83,4 @@ function getRandomIntInc(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-// Check end time
-function getEndtime() {
-  gEndTime = new Date();
-  var timeDiff = gEndTime - gStartTime; //in ms
-  // strip the ms
-  return timeDiff;
 }

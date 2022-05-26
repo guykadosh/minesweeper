@@ -1,6 +1,10 @@
 'use strict';
 
-// DOM - render variables
+////////////////////////////////////
+///  DOM manipulation  functions ///
+////////////////////////////////////
+
+// render variables
 
 const MINE_ICON = '<i class="fa-solid fa-bomb"></i>';
 const FLAG_ICON = '<i class="fa-brands fa-font-awesome"></i>';
@@ -82,6 +86,12 @@ function hideCell(elCell) {
   elCell.innerText = '';
 }
 
+function renderMarkByLoc(location) {
+  var cellId = '#' + getIdName(location);
+  var elCell = document.querySelector(cellId);
+
+  elCell.innerHTML = `<span style="color:#fff">${FLAG_ICON}</span>`;
+}
 // Render Lives
 function renderLives() {
   const elLives = document.querySelector('.lives');
@@ -111,6 +121,11 @@ function renderGameState(value) {
 
 // Shows random safe cell for 2 seconds
 function showSafeCell(elBtn) {
+  if (!gGame.isOn) {
+    guardMsg();
+    return;
+  }
+
   if (!gGame.safeCount) return;
 
   gGame.safeCount--;
@@ -153,7 +168,6 @@ function renderModeTitle(Txt) {
 
 function renderBestTime() {
   const elBestTime = document.querySelector('.best-time');
-  console.log(elBestTime);
 
   switch (gLevel.SIZE) {
     case 4:
@@ -165,5 +179,15 @@ function renderBestTime() {
     case 12:
       elBestTime.innerText = `Expert: ${convertMsToTime(gBestTimeExpert)}`;
       break;
+  }
+}
+
+function guardMsg() {
+  if (!gGame.isOn) {
+    renderModeTitle(`Start Game First`);
+    setTimeout(() => renderModeTitle('Click on a cell to start game'), 800);
+  } else {
+    renderModeTitle(`Restart Game first`);
+    setTimeout(() => renderModeTitle(GAME_ON_TITLE), 800);
   }
 }
