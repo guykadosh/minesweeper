@@ -94,7 +94,6 @@ function showSafeCell(elBtn) {
 
 // recieve location and shows to the user all cells around it(include the cell)
 function showHintArea(location) {
-  console.log('i got called');
   for (var i = location.i - 1; i <= location.i + 1; i++) {
     if (i < 0 || i >= gBoard.length) continue;
     for (var j = location.j - 1; j <= location.j + 1; j++) {
