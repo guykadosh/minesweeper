@@ -89,7 +89,7 @@ function showSafeCell(elBtn) {
 
   setTimeout(() => {
     hideCellByLoc(cellCoord);
-  }, 2000);
+  }, 1000);
 }
 
 // recieve location and shows to the user all cells around it(include the cell)

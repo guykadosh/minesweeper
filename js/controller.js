@@ -37,6 +37,11 @@ function initGame() {
   gGame.hintsCount = 3;
   renderHints();
 
+  gGame.safeCount = 3;
+
+  const elSafeCount = document.querySelector('.btn--safe');
+  elSafeCount.innerText = '3 Safe Clicks';
+
   renderModeTitle('Normal Mode');
   renderBestTime();
 }
