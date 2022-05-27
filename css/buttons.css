@@ -128,7 +128,6 @@
   width: 100px;
   letter-spacing: 2px;
   height: 3em;
-  /* padding: 0 3em; */
   border: none;
   background-color: #354259d0;
   color: #fff;
@@ -136,6 +135,7 @@
   overflow: hidden;
   border-radius: 30px;
   cursor: pointer;
+  font-family: 'Akshar', sans-serif;
 }
 
 .btn-undo::before {
@@ -148,7 +148,7 @@
   height: 0px;
   width: 100%;
   background: #ece5c7;
-  background: linear-gradient(90deg, #cdc2ae7c 20%, #cdc2ae85 100%);
+  background: linear-gradient(90deg, #cdc2ae6b 20%, #cdc2ae85 100%);
   transition: 0.2s;
   cursor: pointer;
 }
@@ -179,17 +179,20 @@
   opacity: 1;
 }
 
+/* Rules btn */
 .btn-rules {
   font-size: 14px;
   font-weight: 200;
   letter-spacing: 1px;
   padding: 6px 15px 6px;
   outline: 0;
-  border: 1px solid rgba(0, 0, 0, 0.505);
+  border: 1px solid rgba(0, 0, 0, 0.684);
   cursor: pointer;
   position: relative;
   background-color: rgba(0, 0, 0, 0);
   border-radius: 3px;
+  z-index: 2;
+  font-family: 'Akshar', sans-serif;
 }
 
 .btn-rules i {
@@ -200,10 +203,12 @@
   right: 2px;
   top: 8px;
   transition: transform 1;
+  z-index: 2;
 }
 
 .btn-rules div {
   transition: transform 0.8s;
+  z-index: 2;
 }
 
 .btn-rules:hover div {
@@ -212,9 +217,9 @@
 
 .btn-rules::after {
   content: '';
-  background-color: #93baa896;
+  background-color: #93baa895;
   width: 100%;
-  z-index: -1;
+  z-index: 1;
   position: absolute;
   height: 100%;
   top: 4px;

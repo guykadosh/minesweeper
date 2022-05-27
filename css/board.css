@@ -7,7 +7,7 @@
 }
 
 .board-container {
-  width: 500px;
+  width: 600px;
 }
 
 table {
@@ -39,4 +39,10 @@ table {
 }
 .cell--shown {
   background-color: #f9fcfa;
+}
+
+.cell--insane {
+  height: 20px;
+  width: 17px;
+  font-size: 12px;
 }

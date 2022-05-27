@@ -27,7 +27,8 @@ function renderBoard(board) {
     strHTML += '<tr>\n';
     for (var j = 0; j < board[0].length; j++) {
       var currCell = board[i][j];
-      var classList = currCell.isShown ? 'cell--shown' : 'cell--hidden';
+      var classList =
+        gLevel.SIZE === 30 ? 'cell--hidden cell--insane' : 'cell--hidden';
 
       strHTML += `\t<td 
       id="cell-${i}-${j}" 
@@ -130,6 +131,9 @@ function renderBestTime() {
       break;
     case 12:
       elBestTime.innerText = `Expert: ${convertMsToTime(gBestTimeExpert)}`;
+      break;
+    case 30:
+      elBestTime.innerText = `Insane: ${convertMsToTime(gBestTimeInsane)}`;
       break;
   }
 }

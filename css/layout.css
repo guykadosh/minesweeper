@@ -1,12 +1,17 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  width: 800px;
-  margin: 0 auto;
+  width: 950px;
+  height: 950px;
+  margin: 48px auto;
+  border: 5px solid #354259;
+  padding: 36px;
+  background: linear-gradient(to right, #c2ded1, #ccf3ee);
+  border-radius: 9px;
+  box-shadow: 3.8px 7.5px 7.5px hsl(0deg 0% 0% / 0.38);
 }
 
 .page {
-  margin: 64px 0;
   display: flex;
   gap: 36px;
   flex-direction: column;
@@ -25,7 +30,7 @@ header {
   gap: 64px;
   align-items: center;
   justify-content: center;
-
+  width: 500px;
   padding: 15px;
   border-radius: 9px;
 }

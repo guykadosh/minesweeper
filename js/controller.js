@@ -9,7 +9,7 @@ function initGame() {
   // Re/Build board
   gBoard = buildBoard();
   renderBoard(gBoard);
-
+  console.log(gBoard);
   // Reset moves
   gGame.moves = [];
 
@@ -43,6 +43,12 @@ function initGame() {
   elSafeCount.innerText = '3 Safe Clicks';
 
   renderModeTitle('Normal Mode');
+
+  if (gLevel.SIZE === 30) {
+    // document.body.style.zoom = '125%'
+    renderModeTitle('Insane Mode! Recommended to change your zoom to 125%');
+  }
+
   renderBestTime();
 }
 

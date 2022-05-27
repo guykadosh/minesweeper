@@ -22,6 +22,7 @@ const gGame = {
 var gBestTimeBeginner = +localStorage.getItem('bestTimeBeginner');
 var gBestTimeMedium = +localStorage.getItem('bestTimeMedium');
 var gBestTimeExpert = +localStorage.getItem('bestTimeExpert');
+var gBestTimeInsane = +localStorage.getItem('bestTimeInsane');
 var gStartTime, gEndTime;
 
 var gBoard;
@@ -36,7 +37,9 @@ const gLevel = {
 
 // Builds the board
 function buildBoard() {
-  const board = createMat(gLevel.SIZE);
+  // Checks if insane mode then 30*16
+  const board =
+    gLevel.SIZE === 30 ? createMat(16, gLevel.SIZE) : createMat(gLevel.SIZE);
 
   for (var i = 0; i < board.length; i++) {
     for (var j = 0; j < board[0].length; j++) {
@@ -54,8 +57,13 @@ function buildBoard() {
 
 // Set mines at random places with given mine count
 function setMines(board, minesCount, location) {
+  console.log(board, minesCount);
   for (var i = 0; i < minesCount; i++) {
-    var idxRow = getRandomIntInc(0, gLevel.SIZE - 1);
+    // case insane mode not a square
+    var idxRow =
+      gLevel.SIZE === 30
+        ? getRandomIntInc(0, 15)
+        : getRandomIntInc(0, gLevel.SIZE - 1);
     var idxColumn = getRandomIntInc(0, gLevel.SIZE - 1);
     if (
       board[idxRow][idxColumn].isMine ||
@@ -100,8 +108,6 @@ function changeBoard(elBtn) {
   if (gLevel.SIZE === +elBtn.dataset.level) return;
   gLevel.SIZE = +elBtn.dataset.level;
 
-  renderModeTitle('Normal Mode');
-
   switch (gLevel.SIZE) {
     case 4:
       gLevel.MINES = 2;
@@ -111,6 +117,9 @@ function changeBoard(elBtn) {
       break;
     case 12:
       gLevel.MINES = 30;
+      break;
+    case 30:
+      gLevel.MINES = 99;
       break;
   }
 

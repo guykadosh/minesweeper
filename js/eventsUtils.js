@@ -49,6 +49,12 @@ function checkBestTime() {
       gBestTimeExpert = localStorage.getItem('bestTimeExpert');
       renderBestTime();
       break;
+    case 30:
+      if (!gBestTimeInsane) localStorage.setItem('bestTimeInsane', time);
+      if (gBestTimeInsane > time) localStorage.setItem('bestTimeInsane', time);
+      gBestTimeInsane = localStorage.getItem('bestTimeInsane');
+      renderBestTime();
+      break;
   }
 }
 
