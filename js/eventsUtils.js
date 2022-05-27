@@ -77,7 +77,7 @@ function gameLost() {
 
   // DOM
   renderGameState(DEAD_ICON);
-  renderModeTitle('You Got Bombed!');
+  renderModeTitle('<i class="fa-solid fa-land-mine-on"></i> You Got Bombed!');
 }
 
 // Handle game won state
@@ -90,7 +90,7 @@ function gameWon() {
 
   // DOM
   renderGameState(WON_ICON);
-  renderModeTitle('Well Done!');
+  renderModeTitle('<i class="fa-solid fa-champagne-glasses"></i> Well Done!');
 
   // Put flags on all bombs not marked and reveals rest of board
   for (var i = 0; i < gBoard.length; i++) {
