@@ -214,6 +214,4 @@ function closeRules() {
   const elOverlay = document.querySelector('.overlay');
   elModal.classList.remove('modal-fade-in');
   elOverlay.classList.add('hidden');
-
-  // setTimeout(() => (elModal.style.display = 'none'), 1000);
 }
