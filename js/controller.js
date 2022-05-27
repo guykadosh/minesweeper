@@ -46,7 +46,7 @@ function initGame() {
 
   if (gLevel.SIZE === 30) {
     // document.body.style.zoom = '125%'
-    renderModeTitle('Insane Mode! Recommended to change your zoom to 125%');
+    renderModeTitle('Insane Mode! Recommended zoom 125%');
   }
 
   renderBestTime();
