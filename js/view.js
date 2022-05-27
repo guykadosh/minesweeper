@@ -201,3 +201,19 @@ function renderMarkByLoc(location) {
 
   elCell.innerHTML = `<span style="color:#fff">${FLAG_ICON}</span>`;
 }
+
+function openRules() {
+  const elModal = document.querySelector('.modal');
+  const elOverlay = document.querySelector('.overlay');
+  elModal.classList.add('modal-fade-in');
+  elOverlay.classList.remove('hidden');
+}
+
+function closeRules() {
+  const elModal = document.querySelector('.modal');
+  const elOverlay = document.querySelector('.overlay');
+  elModal.classList.remove('modal-fade-in');
+  elOverlay.classList.add('hidden');
+
+  // setTimeout(() => (elModal.style.display = 'none'), 1000);
+}

@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="css/buttons.css" />
     <link rel="stylesheet" href="css/board.css" />
     <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/modal.css" />
 
     <script defer src="js/utils.js"></script>
     <script defer src="js/eventsUtils.js"></script>
@@ -140,9 +141,93 @@
         <button class="btn--safe" onclick="showSafeCell(this)">
           <span>3 Safe Clicks</span>
         </button>
+        <div>
+          <button class="btn-rules" onclick="openRules()">
+            <div>Rules</div>
+            <i class="fa-solid fa-arrow-up"></i>
+          </button>
+        </div>
       </div>
     </div>
 
+    <div class="modal rules">
+      <h2>Rules:</h2>
+      <div class="rules-general">
+        <h3>General Rules:</h3>
+        <p>
+          You can start the game by clicking at any cell on board(the first
+          click will never make you lose life) <br />
+          and a timer will start <i class="fa-solid fa-clock"></i> best time
+          will be kept on memory and shown on best time. <br />
+          The goal of the game is to flag (<span
+            ><i class="fa-brands fa-font-awesome"></i></span
+          >) all the mines (<span style="color: red"
+            ><i class="fa-solid fa-bomb"></i></span
+          >), or unhide all the non-mine cells. everytime you step on a mine you
+          will lose 1 (<span><i class="fa-solid fa-heart"></i></span>) life.
+          <br />
+          Once you are out of lifes the game is lost. each non mine cell has a
+          number which tells you how much mine are near him (in the 8
+          neighbouring cells) so use this information to win! <br />
+          To restart the game you can click on the smiley (<i
+            class="fa-regular fa-face-smile"
+          ></i
+          >)
+        </p>
+      </div>
+      <div class="rules-levels">
+        <h3>Levels:</h3>
+        <p>
+          you can choose between 3 leverl <strong>Beginner</strong>,
+          <strong>Medium</strong> and <strong>Expert</strong> which will
+          determind the board size and how much mines will be placed
+        </p>
+      </div>
+      <div class="rules-hints">
+        <h3><i class="fa-regular fa-lightbulb"></i> Hints:</h3>
+        <p>
+          Every game you have up to 3 hints (<i
+            class="fa-regular fa-lightbulb"
+          ></i
+          >) you can use that will reveal an area (3x3) for less than second.
+          that does not count on game move so clicking on a mine will not cause
+          you lose lives.
+        </p>
+      </div>
+      <div class="rules-safe">
+        <h3><i class="fa-solid fa-shield-heart"></i> Safe Clicks:</h3>
+        <p>
+          Every game you have up to 3 <strong>Safe Clicks</strong> that will
+          reveal for a second a safe cell to click on.
+        </p>
+      </div>
+      <div class="rules-undo">
+        <h3><i class="fa-solid fa-rotate-left"></i> Undo</h3>
+        <p>
+          By clicking the <strong>Undo</strong> button every action you made
+          will be reversed this can be done until the first click on the game.
+          (some will say kind of a cheat, don't you agree?)
+        </p>
+      </div>
+      <h2>Modes:</h2>
+      <div class="modes-7-Boom">
+        <h3>7-Boom:</h3>
+        <p>
+          Before game start you can click on <strong>7-Boom</strong> button and
+          that will place bomb every cell that is or has the digit 7 or is
+          divisour of 7 (cells start counting from 0)
+        </p>
+      </div>
+      <div class="modes-7-Boom">
+        <h3><i class="fa-solid fa-arrows-up-down-left-right"></i> Custom:</h3>
+        <p>
+          Before game start you can click on <strong>Custom</strong> button and
+          that will allow you to manually place mines on board according to the
+          level, once done you can start playing your costum game!
+        </p>
+      </div>
+    </div>
+    <div class="overlay hidden" onclick="closeRules()"></div>
     <footer>
       <p>© Coffeerights Guy Kadosh - Coding Academy May 22 - Sprint 1</p>
     </footer>
