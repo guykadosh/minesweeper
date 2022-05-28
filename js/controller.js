@@ -172,6 +172,8 @@ function cellMarked(ev, elCell) {
     return;
   }
 
+  if (gGame.markedCount === gLevel.MINES) return;
+
   // Update model
   curCell.isMarked = true;
   gGame.markedCount++;

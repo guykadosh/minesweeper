@@ -17,6 +17,7 @@ const gGame = {
   isManual: false,
   manualMinesCount: 0,
   is7Boom: false,
+  scale: 100,
 };
 
 // Score variables

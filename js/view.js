@@ -21,7 +21,7 @@ const HINT_HTML = `<span class="hint" onclick="hintClicked(this)"
 // titles
 const GAME_ON_TITLE = `${FLAG_ICON} Flag all mines to win`;
 const SEVEN_BOOM_TITLE = '7 Boom Mode';
-const INSANE_MODE_TITLE = 'Insane Mode! Change zoom 125%-150%';
+const INSANE_MODE_TITLE = 'Insane Mode! Change zoom 120%-150%';
 const WON_TITLE = '<i class="fa-solid fa-champagne-glasses"></i> Well Done!';
 const LOST_TITLE = '<i class="fa-solid fa-land-mine-on"></i> You Got Bombed!';
 
@@ -205,7 +205,38 @@ function showCell(elCell, cell) {
     return;
   }
 
-  elCell.innerText = cell.minesAroundCount === 0 ? ' ' : cell.minesAroundCount;
+  var cellHTML = '';
+  switch (cell.minesAroundCount) {
+    case 0:
+      cellHTML = ' ';
+      break;
+    case 1:
+      cellHTML = `<span style="color:#2b8a3e">1</span>`;
+      break;
+    case 2:
+      cellHTML = `<span style="color:#e67700">2</span>`;
+      break;
+    case 3:
+      cellHTML = `<span style="color:#0b7285">3</span>`;
+      break;
+    case 4:
+      cellHTML = `<span style="color:#495057">4</span>`;
+      break;
+    case 5:
+      cellHTML = `<span style="color:#c2255c">5</span>`;
+      break;
+    case 6:
+      cellHTML = `<span style="color:#862e9c">6</span>`;
+      break;
+    case 7:
+      cellHTML = `<span style="color:#228be6">7</span>`;
+      break;
+    case 8:
+      cellHTML = `<span style="color:#212529">8</span>`;
+      break;
+  }
+
+  elCell.innerHTML = cellHTML;
 }
 
 // Hide Cell
@@ -230,6 +261,7 @@ function renderMinesLeft() {
     .padStart(2, '0');
 }
 
+// Handel Rules button
 function openRules() {
   const elModal = document.querySelector('.modal');
   const elOverlay = document.querySelector('.overlay');
@@ -244,4 +276,19 @@ function closeRules() {
 
   elModal.classList.remove('modal-fade-in');
   elOverlay.classList.add('hidden');
+}
+
+// Handle zoom buttons and scale the game board
+function scaleGame(elBtn, scaleSize = 0) {
+  const elGame = document.querySelector('.grid');
+  gGame.scale += scaleSize;
+  const scaleStr = `scale(${gGame.scale}%)`;
+  elGame.style.transform = scaleStr;
+
+  const elBtnTxt = elBtn.querySelector('div');
+  elBtnTxt.innerText = `${gGame.scale}%`;
+  setTimeout(
+    () => (elBtnTxt.innerText = scaleSize < 0 ? 'Zoom out' : 'Zoom in'),
+    700
+  );
 }
