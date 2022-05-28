@@ -1,6 +1,7 @@
 'use strict';
 
 // Model - Global variables
+const INSANE_SIZE = 30;
 
 // Game state
 const gGame = {
@@ -31,6 +32,7 @@ var gInterval;
 const gLevel = {
   SIZE: 4,
   MINES: 2,
+  INSANE: 16,
 };
 
 // Model - functions
@@ -39,7 +41,9 @@ const gLevel = {
 function buildBoard() {
   // Checks if insane mode then 30*16
   const board =
-    gLevel.SIZE === 30 ? createMat(16, gLevel.SIZE) : createMat(gLevel.SIZE);
+    gLevel.SIZE === INSANE_SIZE
+      ? createMat(gLevel.INSANE, gLevel.SIZE)
+      : createMat(gLevel.SIZE);
 
   for (var i = 0; i < board.length; i++) {
     for (var j = 0; j < board[0].length; j++) {
@@ -57,12 +61,11 @@ function buildBoard() {
 
 // Set mines at random places with given mine count
 function setMines(board, minesCount, location) {
-  console.log(board, minesCount);
   for (var i = 0; i < minesCount; i++) {
     // case insane mode not a square
     var idxRow =
-      gLevel.SIZE === 30
-        ? getRandomIntInc(0, 15)
+      gLevel.SIZE === INSANE_SIZE
+        ? getRandomIntInc(0, gLevel.INASE - 1)
         : getRandomIntInc(0, gLevel.SIZE - 1);
     var idxColumn = getRandomIntInc(0, gLevel.SIZE - 1);
     if (
@@ -108,6 +111,7 @@ function changeBoard(elBtn) {
   if (gLevel.SIZE === +elBtn.dataset.level) return;
   gLevel.SIZE = +elBtn.dataset.level;
 
+  // Place mines count
   switch (gLevel.SIZE) {
     case 4:
       gLevel.MINES = 2;

@@ -31,31 +31,28 @@ function checkBestTime() {
 
   switch (gLevel.SIZE) {
     case 4:
-      if (!gBestTimeBeginner) localStorage.setItem('bestTimeBeginner', time);
-      if (gBestTimeBeginner > time)
-        localStorage.setItem('bestTimeBeginner', time);
+      setBestTime(gBestTimeBeginner, 'bestTimeBeginner', time);
       gBestTimeBeginner = +localStorage.getItem('bestTimeBeginner');
-      renderBestTime();
       break;
     case 8:
-      if (!gBestTimeMedium) localStorage.setItem('bestTimeMedium', time);
-      if (gBestTimeMedium > time) localStorage.setItem('bestTimeMedium', time);
+      setBestTime(gBestTimeMedium, 'bestTimeMedium', time);
       gBestTimeMedium = localStorage.getItem('bestTimeMedium');
-      renderBestTime();
       break;
     case 12:
-      if (!gBestTimeExpert) localStorage.setItem('bestTimeExpert', time);
-      if (gBestTimeExpert > time) localStorage.setItem('bestTimeExpert', time);
+      setBestTime(gBestTimeExpert, 'bestTimeExpert', time);
       gBestTimeExpert = localStorage.getItem('bestTimeExpert');
-      renderBestTime();
       break;
     case 30:
-      if (!gBestTimeInsane) localStorage.setItem('bestTimeInsane', time);
-      if (gBestTimeInsane > time) localStorage.setItem('bestTimeInsane', time);
+      setBestTime(gBestTimeInsane, 'bestTimeInsane', time);
       gBestTimeInsane = localStorage.getItem('bestTimeInsane');
-      renderBestTime();
       break;
   }
+  renderBestTime();
+}
+
+function setBestTime(bestTimeLevel, bestTimeStorageName, time) {
+  if (!bestTimeLevel) localStorage.setItem(bestTimeStorageName, time);
+  if (bestTimeLevel > time) localStorage.setItem(bestTimeStorageName, time);
 }
 
 // End Game
@@ -68,10 +65,14 @@ function gameLost() {
 
   clearInterval(gInterval);
 
-  // reveals all the board
+  // DOM
+  renderGameState(DEAD_ICON);
+  renderModeTitle(LOST_TITLE);
+
+  // reveals all mines on board
   for (var i = 0; i < gBoard.length; i++) {
     for (var j = 0; j < gBoard[0].length; j++) {
-      if (gBoard[i][j].isShown) continue;
+      if (gBoard[i][j].isShown || !gBoard[i][j].isMine) continue;
 
       // Model
       gBoard[i][j].isShown = true;
@@ -80,10 +81,6 @@ function gameLost() {
       showCellByLoc({ i, j });
     }
   }
-
-  // DOM
-  renderGameState(DEAD_ICON);
-  renderModeTitle('<i class="fa-solid fa-land-mine-on"></i> You Got Bombed!');
 }
 
 // Handle game won state
@@ -96,7 +93,7 @@ function gameWon() {
 
   // DOM
   renderGameState(WON_ICON);
-  renderModeTitle('<i class="fa-solid fa-champagne-glasses"></i> Well Done!');
+  renderModeTitle(WON_TITLE);
 
   // Put flags on all bombs not marked and reveals rest of board
   for (var i = 0; i < gBoard.length; i++) {
@@ -153,6 +150,28 @@ function checkMinesFlagged() {
   return true;
 }
 
+// Called when user clicks on mine
+function stepOnMine(cell, i, j) {
+  gGame.livesCount--;
+  renderLives();
+
+  // Push to last moves
+  gGame.moves.push({ cell, location: { i, j } });
+
+  // considered as a marked mine
+  cell.isMarked = true;
+  gGame.markedCount++;
+
+  // Worried emoji on last chance
+  if (gGame.livesCount === 1) renderGameState(DYING_ICON);
+
+  // When relevant  check if game won(clicked last mine but still has lives)
+  if (gGame.markedCount === gLevel.MINES && checkGameOver()) gameWon();
+
+  // Lose game when out of lifes
+  if (!gGame.livesCount) gameLost();
+}
+
 // Expand  shown cells for every cell that had no mine neighbors
 function expandShown(board, rowIdx, colIdx) {
   for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
@@ -179,5 +198,22 @@ function expandShown(board, rowIdx, colIdx) {
         location: { i, j },
       });
     }
+  }
+}
+
+// Called when user on manual board and pick spot for mine
+function setMineManual(elCell, cell) {
+  // Model
+  gGame.manualMinesCount--;
+  cell.isMine = true;
+
+  // DOM
+  showCell(elCell, cell);
+  renderModeTitle(`Costume Mode: ${gGame.manualMinesCount} left to place`);
+
+  // Hide Board
+  if (gGame.manualMinesCount === 0) {
+    renderBoard(gBoard);
+    renderModeTitle('Ready to start');
   }
 }

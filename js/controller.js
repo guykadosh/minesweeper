@@ -9,14 +9,13 @@ function initGame() {
   // Re/Build board
   gBoard = buildBoard();
   renderBoard(gBoard);
-  console.log(gBoard);
+
   // Reset moves
   gGame.moves = [];
 
   // Stop and clear timer
   clearInterval(gInterval);
-  const elTimer = document.querySelector('.timer');
-  elTimer.innerText = '00:00:00';
+  renderTimer();
 
   // Reset Game modes
   gGame.isOn = false;
@@ -38,15 +37,14 @@ function initGame() {
   renderHints();
 
   gGame.safeCount = 3;
+  renderSafeCounts();
 
-  const elSafeCount = document.querySelector('.btn--safe');
-  elSafeCount.innerText = '3 Safe Clicks';
-
+  // Render mode title
   renderModeTitle('Normal Mode');
 
-  if (gLevel.SIZE === 30) {
+  if (gLevel.SIZE === INSANE_SIZE) {
     // document.body.style.zoom = '125%'
-    renderModeTitle('Insane Mode! Recommended zoom 125%');
+    renderModeTitle(INSANE_MODE_TITLE);
   }
 
   renderBestTime();
@@ -55,10 +53,18 @@ function initGame() {
 // Start game on first move
 function startGame(isModed = false, location = null) {
   gGame.isOn = true;
+
+  // When normal mode sets mines randomally on board
+  // Will not set mine on given location (first click)
   if (!isModed) setMines(gBoard, gLevel.MINES, location);
-  renderModeTitle(GAME_ON_TITLE);
+
+  // for every non mine cell counting neighbouring mines
   setMinesNegsCount(gBoard);
 
+  // Render game start title
+  renderModeTitle(GAME_ON_TITLE);
+
+  // Start timers
   gStartTime = new Date();
   startTimer();
 }
@@ -69,22 +75,11 @@ function cellClicked(elCell, i, j) {
 
   var clickedCell = gBoard[i][j];
 
+  // BEFORE GAME STARTS
+
   // Handle manual building board clicks
   if (gGame.isManual && gGame.manualMinesCount) {
-    // Model
-    gGame.manualMinesCount--;
-    clickedCell.isMine = true;
-
-    // DOM
-    showCell(elCell, clickedCell);
-    renderModeTitle(`Costume Mode: ${gGame.manualMinesCount} left to place`);
-
-    // Hide Board
-    if (gGame.manualMinesCount === 0) {
-      renderBoard(gBoard);
-      renderModeTitle('Ready to start');
-    }
-
+    setMineManual(elCell, clickedCell);
     return;
   }
 
@@ -94,13 +89,18 @@ function cellClicked(elCell, i, j) {
     startGame(true);
   }
 
-  // Handle 7 Boom mode
+  // Start 7 Boom mode
   if (gGame.is7BoomMode) {
-    startGame(true);
     gGame.is7BoomMode = false;
+    startGame(true);
   }
 
-  // ignore clicks on shown cells
+  //  Start normal mode
+  if (!gGame.isOn) startGame(false, { i, j });
+
+  // AFTER GAME STARTS
+
+  // ignore clicks on shown & marked cells
   if (clickedCell.isShown || clickedCell.isMarked) return;
 
   // Handle Hint On
@@ -110,9 +110,6 @@ function cellClicked(elCell, i, j) {
     gGame.isHintOn = false;
     return;
   }
-
-  //  Start normal mode
-  if (!gGame.isOn) startGame(false, { i, j });
 
   // Show Cell
   // Update Model
@@ -124,24 +121,7 @@ function cellClicked(elCell, i, j) {
 
   // Handle mine clicks
   if (clickedCell.isMine) {
-    gGame.livesCount--;
-    renderLives();
-
-    // Push to last moves
-    gGame.moves.push({ cell: clickedCell, location: { i, j } });
-    // considered as a marked mine
-    clickedCell.isMarked = true;
-    gGame.markedCount++;
-
-    // Worried emoji on last chance
-    if (gGame.livesCount === 1) renderGameState(DYING_ICON);
-
-    // When relevant  check if game won(clicked last mine but still has lives)
-    if (gGame.markedCount === gLevel.MINES && checkGameOver()) gameWon();
-
-    // Lose game when out of lifes
-    if (!gGame.livesCount) gameLost();
-
+    stepOnMine(clickedCell, i, j);
     return;
   }
 
@@ -154,6 +134,16 @@ function cellClicked(elCell, i, j) {
   }
 
   // When relevant  check if game won
+  // Insane mode
+  if (gLevel.SIZE === INSANE_SIZE) {
+    if (
+      gGame.shownCount >= gLevel.SIZE * gLevel.INSANE - gLevel.MINES &&
+      checkGameOver()
+    )
+      gameWon();
+  }
+
+  // Rest of modes
   if (gGame.shownCount >= gLevel.SIZE ** 2 - gLevel.MINES && checkGameOver())
     gameWon();
 }
@@ -253,7 +243,11 @@ function undoMove() {
   } else {
     lastMove.cell.isShown = false;
     gGame.shownCount--;
-    if (lastMove.cell.isMine) gGame.livesCount++;
+    if (lastMove.cell.isMine) {
+      gGame.livesCount++;
+      lastMove.cell.isMarked = false;
+    }
+
     renderLives();
     hideCellByLoc(lastMove.location);
   }

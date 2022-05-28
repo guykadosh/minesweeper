@@ -6,6 +6,7 @@
 
 // render variables
 
+// icons
 const MINE_ICON = '<i class="fa-solid fa-bomb"></i>';
 const FLAG_ICON = '<i class="fa-brands fa-font-awesome"></i>';
 const ALIVE_ICON = '<i class="fa-regular fa-face-smile"></i>';
@@ -16,8 +17,13 @@ const DYING_ICON = '<i class="fa-regular fa-face-surprise"></i>';
 const HINT_HTML = `<span class="hint" onclick="hintClicked(this)"
 ><i class="fa-regular fa-lightbulb"></i
 ></span>`;
+
+// titles
 const GAME_ON_TITLE = `${FLAG_ICON} Flag all mines to win`;
 const SEVEN_BOOM_TITLE = '7 Boom Mode';
+const INSANE_MODE_TITLE = 'Insane Mode! Change zoom 125%-150%';
+const WON_TITLE = '<i class="fa-solid fa-champagne-glasses"></i> Well Done!';
+const LOST_TITLE = '<i class="fa-solid fa-land-mine-on"></i> You Got Bombed!';
 
 // Render the board as a <table>
 // to the page
@@ -26,9 +32,11 @@ function renderBoard(board) {
   for (var i = 0; i < board.length; i++) {
     strHTML += '<tr>\n';
     for (var j = 0; j < board[0].length; j++) {
-      var currCell = board[i][j];
+      // add class if INSANE mode
       var classList =
-        gLevel.SIZE === 30 ? 'cell--hidden cell--insane' : 'cell--hidden';
+        gLevel.SIZE === INSANE_SIZE
+          ? 'cell--hidden cell--insane'
+          : 'cell--hidden';
 
       strHTML += `\t<td 
       id="cell-${i}-${j}" 
@@ -40,7 +48,6 @@ function renderBoard(board) {
     strHTML += '</tr>\n';
   }
 
-  // console.log(strHTML);
   const elBoard = document.querySelector('.board');
   elBoard.innerHTML = strHTML;
 }
@@ -93,6 +100,11 @@ function showSafeCell(elBtn) {
   }, 1000);
 }
 
+function renderSafeCounts() {
+  const elSafeCount = document.querySelector('.btn--safe');
+  elSafeCount.innerText = '3 Safe Clicks';
+}
+
 // recieve location and shows to the user all cells around it(include the cell)
 function showHintArea(location) {
   for (var i = location.i - 1; i <= location.i + 1; i++) {
@@ -116,6 +128,11 @@ function showHintArea(location) {
     renderModeTitle(GAME_ON_TITLE);
     renderHints();
   }, 300);
+}
+
+function renderTimer() {
+  const elTimer = document.querySelector('.timer');
+  elTimer.innerText = '00:00:00';
 }
 
 // Render the best time according to current level
