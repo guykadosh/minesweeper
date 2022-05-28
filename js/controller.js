@@ -42,6 +42,8 @@ function initGame() {
   // Render mode title
   renderModeTitle('Normal Mode');
 
+  renderMinesLeft();
+
   if (gLevel.SIZE === INSANE_SIZE) {
     // document.body.style.zoom = '125%'
     renderModeTitle(INSANE_MODE_TITLE);
@@ -164,6 +166,7 @@ function cellMarked(ev, elCell) {
   if (curCell.isMarked) {
     curCell.isMarked = false;
     gGame.markedCount--;
+    renderMinesLeft();
 
     elCell.innerHTML = '';
     return;
@@ -172,6 +175,7 @@ function cellMarked(ev, elCell) {
   // Update model
   curCell.isMarked = true;
   gGame.markedCount++;
+  renderMinesLeft();
 
   // Update DOM
   elCell.innerHTML = `<span style="color:#fff">${FLAG_ICON}</span>`;

@@ -161,6 +161,7 @@ function stepOnMine(cell, i, j) {
   // considered as a marked mine
   cell.isMarked = true;
   gGame.markedCount++;
+  renderMinesLeft();
 
   // Worried emoji on last chance
   if (gGame.livesCount === 1) renderGameState(DYING_ICON);

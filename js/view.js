@@ -223,9 +223,17 @@ function renderMarkByLoc(location) {
   elCell.innerHTML = `<span style="color:#fff">${FLAG_ICON}</span>`;
 }
 
+function renderMinesLeft() {
+  const elMinesLeft = document.querySelector('.mines-left');
+  elMinesLeft.innerText = (gLevel.MINES - gGame.markedCount)
+    .toString()
+    .padStart(2, '0');
+}
+
 function openRules() {
   const elModal = document.querySelector('.modal');
   const elOverlay = document.querySelector('.overlay');
+
   elModal.classList.add('modal-fade-in');
   elOverlay.classList.remove('hidden');
 }
@@ -233,6 +241,7 @@ function openRules() {
 function closeRules() {
   const elModal = document.querySelector('.modal');
   const elOverlay = document.querySelector('.overlay');
+
   elModal.classList.remove('modal-fade-in');
   elOverlay.classList.add('hidden');
 }

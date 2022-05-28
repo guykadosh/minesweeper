@@ -8,7 +8,8 @@
 
 body {
   font-family: 'Lobster', sans-serif;
-  background-color: #c2ded1;
+  /* background-color: #c2ded1; */
+  background-image: url('../img/background.png');
   color: #354259;
 }
 
@@ -24,19 +25,25 @@ h1 {
 }
 
 .game-state {
+  box-shadow: inset 3px 3px 3px 0px rgba(255, 255, 255, 0.5),
+    7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
   height: 80px;
   width: 80px;
   padding: 5px;
   font-size: 48px;
-  border: 3px solid #354259;
+  border: 2px solid #38455b;
   border-radius: 9px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.5s;
+  background-color: #c2ded1;
 }
 
 .game-state:hover {
-  background-color: #f9fcfa;
+  background-color: #c2ded194;
+}
+
+.game-state:active {
+  transform: scale(95%);
 }
 
 /* Helpers */

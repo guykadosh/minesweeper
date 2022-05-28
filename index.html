@@ -130,6 +130,13 @@
 
       <!-- RIGHT SIDE: game helpers and rules -->
       <div class="helpers">
+        <div class="mines-left-container">
+          <h2>
+            <i class="fa-solid fa-bomb"></i>Mines:
+            <span class="mines-left">00</span>
+          </h2>
+        </div>
+
         <div class="best-time-container">
           <h2><i class="fa-solid fa-medal"></i> Best Time:</h2>
           <p class="best-time">00:00:00</p>
@@ -151,16 +158,17 @@
         <button class="btn--safe" onclick="showSafeCell(this)">
           <span>3 Safe Clicks</span>
         </button>
-        <div>
-          <button class="btn-rules" onclick="openRules()">
-            <div>Rules</div>
-            <i class="fa-solid fa-arrow-up"></i>
-          </button>
-        </div>
+      </div>
+      <div class="btn-rules-box">
+        <button class="btn-rules" onclick="openRules()">
+          <div>Rules</div>
+          <i class="fa-solid fa-arrow-up"></i>
+        </button>
       </div>
     </div>
 
     <!-- RULES  -->
+
     <div class="modal rules">
       <h2>Rules</h2>
       <div class="rules-general">

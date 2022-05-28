@@ -4,11 +4,15 @@
   width: 950px;
   height: 950px;
   margin: 48px auto;
-  border: 5px solid #354259;
+  border: 5px solid #3542599b;
   padding: 36px;
-  background: linear-gradient(to right, #c2ded1, #ccf3ee);
+  /* background: linear-gradient(to right, #c2ded1, #ccf3ee); */
+  /* background-color: rgba(255, 255, 255, 0.811); */
+  /* background-color: #ccf3eec5; */
+  background-color: #c2ded1e4;
   border-radius: 9px;
   box-shadow: 3.8px 7.5px 7.5px hsl(0deg 0% 0% / 0.38);
+  position: relative;
 }
 
 .page {
@@ -17,6 +21,12 @@
   flex-direction: column;
   text-align: center;
   align-items: center;
+}
+
+.btn-rules-box {
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
 
 header {
@@ -30,7 +40,7 @@ header {
   gap: 64px;
   align-items: center;
   justify-content: center;
-  width: 500px;
+  width: 600px;
   padding: 15px;
   border-radius: 9px;
 }
