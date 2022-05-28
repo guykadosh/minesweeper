@@ -2,15 +2,13 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  /* scrollbar-width: thin;
-  scrollbar-color: #354259 #e0e0e0; */
 }
 
 body {
   font-family: 'Lobster', sans-serif;
-  /* background-color: #c2ded1; */
   background-image: url('../img/background.png');
   color: #354259;
+  overflow: scroll;
 }
 
 /* Header Desing */

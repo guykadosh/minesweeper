@@ -280,6 +280,9 @@ function closeRules() {
 
 // Handle zoom buttons and scale the game board
 function scaleGame(elBtn, scaleSize = 0) {
+  if (gGame.scale < 50 && scaleSize < 0) return;
+  if (gGame.scale > 130 && scaleSize > 0) return;
+
   const elGame = document.querySelector('.grid');
   gGame.scale += scaleSize;
   const scaleStr = `scale(${gGame.scale}%)`;
