@@ -65,7 +65,7 @@ function setMines(board, minesCount, location) {
     // case insane mode not a square
     var idxRow =
       gLevel.SIZE === INSANE_SIZE
-        ? getRandomIntInc(0, gLevel.INASE - 1)
+        ? getRandomIntInc(0, gLevel.INSANE - 1)
         : getRandomIntInc(0, gLevel.SIZE - 1);
     var idxColumn = getRandomIntInc(0, gLevel.SIZE - 1);
     if (

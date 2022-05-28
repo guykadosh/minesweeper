@@ -67,8 +67,9 @@ h1 {
 footer {
   text-transform: uppercase;
   font-family: 'Akshar', sans-serif;
-  color: #888;
+  color: #333;
   text-align: center;
-  margin-bottom: 64px;
+  margin-bottom: 24px;
   font-size: 12px;
+  font-weight: 700;
 }
