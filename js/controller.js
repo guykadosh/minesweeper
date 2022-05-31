@@ -163,7 +163,7 @@ function cellMarked(ev, elCell) {
 
   if (!gGame.isOn) return
 
-  let coord = getCellCoord(elCell.id)
+  let coord = getCellCoord(elCell.classList[1])
   let curCell = gBoard[coord.i][coord.j]
 
   if (curCell.isShown) return

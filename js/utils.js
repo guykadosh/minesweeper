@@ -40,8 +40,8 @@ function getClassName(location) {
   return cellId
 }
 
-function getCellCoord(strCellId) {
-  let parts = strCellId.split('-')
+function getCellCoord(strCellClass) {
+  let parts = strCellClass.split('-')
   let coord = { i: +parts[1], j: +parts[2] }
   return coord
 }
